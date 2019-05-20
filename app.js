@@ -19,6 +19,9 @@ app.set('view engine', 'ejs');
 
 app.use(express.urlencoded({ extended: false }));
 
+// static files
+app.use( express.static( "public" ) );
+
 app.use(session({
     secret: 'secret',
     resave: true,
