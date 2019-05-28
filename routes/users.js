@@ -6,8 +6,12 @@ const passport = require('passport');
 
 const User = require('../models/User');
 
-router.get('/login', (req, res) => res.render('login'));
-router.get('/signup', (req, res) => res.render('signup'));
+router.get('/login', (req, res) => res.render('login',{
+    title: 'Login'          // title for page Login
+}));
+router.get('/signup', (req, res) => res.render('signup',{
+    title: 'Register'       // title for page register
+}));
 
 router.post('/signup', (req, res) => {
     const { name, studentId, email, password, password2 } = req.body;
