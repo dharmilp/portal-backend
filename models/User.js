@@ -8,7 +8,6 @@ const UserSchema = new mongoose.Schema({
     studentId: {
         type: String,
         required: true,
-        unique: true
     },
     email: {
         type: String,
@@ -22,6 +21,8 @@ const UserSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    resetPasswordToken: String,
+    resetPasswordExpires: Date
 });
 
 const User = mongoose.model('User', UserSchema);

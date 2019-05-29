@@ -10,4 +10,9 @@ router.get('/dashboard', ensureAuthenticated, (req, res) => res.render('dashboar
     title: 'Dashboard'      // title for page Dashboard
 }));
 
+router.get('/admin', ensureAuthenticated, (req, res) => res.render('admin', {
+    name: req.user.name,
+    title: 'Admin Dashboard'      // title for page Admin Dashboard
+}));
+
 module.exports = router;

@@ -4,16 +4,21 @@ const mongoose = require('mongoose');
 const flash = require('connect-flash');
 const session = require('express-session');
 const passport = require('passport');
+const bodyParser = require('body-parser');
 
 const app = express();
+require('dotenv').config()
 
 require('./config/passport')(passport);
 
-const db = require('./config/keys').MongoURI;
+//const db = require('./config/keys').MongoURI;
+const db = "mongodb://localhost/SPCTEST";
 mongoose.connect(db, {useNewUrlParser: true})
 .then(() => console.log('MongoDb connected'))
 .catch(err => console.log(err));
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended : false}));
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
 app.set("layout extractScripts", true);
@@ -25,7 +30,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use( express.static( "public" ) );
 
 app.use(session({
-    secret: 'secret',
+    secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: true
 }));
