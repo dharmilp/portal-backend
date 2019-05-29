@@ -9,6 +9,7 @@ const nodemailer = require('nodemailer');
 const User = require('../models/User');
 const mailSetup = require('../config/mailSetup');
 
+
 router.get('/login', (req, res) => res.render('login',{
     title: 'Login'          // title for page Login
 }));
@@ -17,6 +18,44 @@ router.get('/signup', (req, res) => res.render('signup',{
 }));
 router.get('/forgot', (req,res) => res.render('forgot',{
     title: 'Reset Password'
+}));
+router.get('/uquiz', (req,res) => res.render('uquiz',{
+  name: "",
+  title: 'Quiz'
+}));
+router.get('/uresult', (req,res) => res.render('uresult',{
+  name: "",
+  title: 'Result'
+}));
+router.get('/umyaccount', (req,res) => res.render('umyaccount',{
+  name: "",
+  title: 'Account'
+}));
+
+
+router.get('/auser', (req,res) => res.render('auser',{
+  name: "",
+  title: 'Users'
+}));
+router.get('/questionbank', (req,res) => res.render('questionbank',{
+  name: "",
+  title: 'Question Bank'
+}));
+router.get('/settings', (req,res) => res.render('settings',{
+  name: "",
+  title: 'Settings'
+}));
+router.get('/aquiz', (req,res) => res.render('aquiz',{
+  name: "",
+  title: 'Quiz'
+}));
+router.get('/aresult', (req,res) => res.render('aresult',{
+  name: "",
+  title: 'Result'
+}));
+router.get('/amyaccount', (req,res) => res.render('amyaccount',{
+  name: "",
+  title: 'Account'
 }));
 
 router.post('/signup', (req, res) => {
@@ -81,8 +120,11 @@ router.post('/signup', (req, res) => {
 });
 
 router.post('/login', (req, res, next) => {
+    var str = req.body.studentId;
+    var adm = "Admin";
+    console.log(str);
     passport.authenticate('local', {
-      successRedirect: '/dashboard',
+      successRedirect: str.localeCompare(adm)==0 ? '/admin':'/dashboard',
       failureRedirect: '/users/login',
       failureFlash: true
     })(req, res, next);
