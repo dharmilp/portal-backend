@@ -7,6 +7,7 @@ const async = require('async');
 const nodemailer = require('nodemailer');
 
 const User = require('../models/User');
+//const Question = require('../models/Questions');
 const mailSetup = require('../config/mailSetup');
 
 
@@ -58,6 +59,13 @@ router.get('/amyaccount', (req,res) => res.render('amyaccount',{
   title: 'Account'
 }));
 
+
+router.get('/addquestion', (req,res) => res.render('addques',{
+  name: "",
+  title: 'Account'
+}));
+
+
 router.post('/signup', (req, res) => {
     const { name, studentId, email, password, password2 } = req.body;
     let errors = [];
@@ -101,8 +109,7 @@ router.post('/signup', (req, res) => {
                     studentId,
                     email,
                     password
-                });
-
+                });  
                 bcrypt.genSalt(10, (err, salt) => 
                     bcrypt.hash(newUser.password, salt, (err, hash) => {
                         if(err) throw err;

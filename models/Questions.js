@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 //import mongoose, { Schema } from 'mongoose';
 
 //const UserSchema = new mongoose.Schema({
-const UserSchema = new mongoose.Schema({
+const QuestionSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
@@ -28,7 +28,7 @@ const UserSchema = new mongoose.Schema({
 });
 
 const myDb = mongoose.connection.useDb('SPCLOGIN');
-const User = myDb.model('User', UserSchema);
+const Questions = myDb.model('Question', QuestionSchema);
 
 //export default User;
-module.exports = User;
+module.exports = Questions;

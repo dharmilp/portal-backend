@@ -5021,7 +5021,7 @@ License - nucleoapp.com/license/
   position: relative;
   float: right;
   width: calc(100% - 260px);
-  background-color: #f4f3ef;
+  background-color: #ffffff;
   -webkit-transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
   -moz-transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
   -o-transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
@@ -5031,8 +5031,24 @@ License - nucleoapp.com/license/
 
 .main-panel>.content {
   padding: 0 30px 30px;
+  /* position: absolute;
+  float: left; */
   min-height: calc(100vh - 123px);
+  /* margin-top: 50px; */
   margin-top: 93px;
+  /* margin-left: -175px;
+  width: 800px; */
+}
+
+.main-panel>.content1 {
+  padding: 0 30px 30px;
+  position: absolute;
+  float: left; 
+  min-height: calc(100vh - 123px);
+   margin-top: 50px; 
+  /* margin-top: 93px; */
+  margin-left: -225px;
+  width: 1000px;
 }
 
 .main-panel>.navbar {
