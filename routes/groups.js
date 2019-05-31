@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Group = require('../models/groups');
+const Group = require('../models/Groups');
 const { ensureAuthenticated } = require('../config/auth');
 
 

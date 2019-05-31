@@ -7,7 +7,7 @@ const GroupSchema = new mongoose.Schema({
         unique: true
     }
 });
-const myDb = mongoose.connection.useDb('SPCPortal');
-const Group = myDb.model('Group', GroupSchema);
+const myDB = mongoose.connection.useDb('SPCPortal');
+const Group = myDB.model('Group', GroupSchema);
 
 module.exports = Group;
