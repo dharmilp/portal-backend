@@ -17,7 +17,7 @@ const QuestionSchema = new mongoose.Schema({
     }
 });
 
-const myDb = mongoose.connection.useDb('SPCLOGIN');
+const myDb = mongoose.connection.useDb('SPCPortal');
 const Questions = myDb.model('Question', QuestionSchema);
 
 //export default User;

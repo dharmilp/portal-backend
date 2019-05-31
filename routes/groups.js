@@ -4,7 +4,7 @@ const Group = require('../models/groups');
 const { ensureAuthenticated } = require('../config/auth');
 
 
-router.get('/',async function(req, res, next) {
+router.get('/',ensureAuthenticated, function(req, res, next) {
     var perPage = 9;
     var page = req.query.page || 1;
 

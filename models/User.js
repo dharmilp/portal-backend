@@ -27,7 +27,7 @@ const UserSchema = new mongoose.Schema({
     resetPasswordExpires: Date
 });
 
-const myDb = mongoose.connection.useDb('SPCLOGIN');
+const myDb = mongoose.connection.useDb('SPCPortal');
 const User = myDb.model('User', UserSchema);
 
 //export default User;

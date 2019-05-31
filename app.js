@@ -12,7 +12,7 @@ require('dotenv').config()
 require('./config/passport')(passport);
 
 //const db = require('./config/keys').MongoURI;
-const db = "mongodb://localhost/SPCTEST";
+const db = "mongodb://localhost/default";
 mongoose.connect(db, {useNewUrlParser: true})
 .then(() => console.log('MongoDb connected'))
 .catch(err => console.log(err));
