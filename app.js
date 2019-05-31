@@ -12,10 +12,12 @@ require('dotenv').config()
 require('./config/passport')(passport);
 
 //const db = require('./config/keys').MongoURI;
-const db = "mongodb://localhost/default";
+const db = "mongodb://localhost/SPCTEST";
 mongoose.connect(db, {useNewUrlParser: true})
 .then(() => console.log('MongoDb connected'))
 .catch(err => console.log(err));
+
+mongoose.set('useCreateIndex', true);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : false}));
@@ -49,7 +51,7 @@ app.use((req,res,next) => {
 
 app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/users'));
-
+app.use('/groups',require('./routes/groups'));
 
 
 

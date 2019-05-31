@@ -1,0 +1,32 @@
+
+
+<% if (pages > 0) { %>
+    <div class="pagination text-center">
+        <% if (current == 1) { %>
+            <a class="page-numbers">First</a>
+        <% } else { %>
+            <a class="page-numbers" href="/<%=docType%>?page=1">First</a>
+        <% } %>
+        <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+        <% if (i !== 1) { %>
+            <a class="page-numbers">...</a>
+        <% } %>
+        <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+            <% if (i == current) { %>
+                <a class="active page-numbers"><%= i %></a>
+            <% } else { %>
+                <a class="page-numbers" href="/<%=docType%>?page=<%= i %>"><%= i %></a>
+            <% } %>
+            <% if (i == Number(current) + 4 && i < pages) { %>
+                <a class="page-numbers">...</a>
+            <% } %>
+        <% } %>
+        <% if (current == pages) { %>
+            <a class="page-numbers">Last</a>
+        <% } else { %>
+            <a class="page-numbers" href="/<%=docType%>?page=<%= pages %>">Last</a>
+        <% } %>
+    </div>
+  <% } %>
+  
+  <link rel="stylesheet" href="pagination.css">
