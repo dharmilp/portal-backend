@@ -3,28 +3,18 @@ const mongoose = require('mongoose');
 
 //const UserSchema = new mongoose.Schema({
 const QuestionSchema = new mongoose.Schema({
-    name: {
+    qtype: {
         type: String,
         required: true
     },
-    studentId: {
+    category: {
         type: String,
         required: true,
     },
-    email: {
-        type: String,
+    question: {
+        type: Object,
         required: true
-    },
-    password: {
-        type: String,
-        required: true
-    },
-    date: {
-        type: Date,
-        default: Date.now
-    },
-    resetPasswordToken: String,
-    resetPasswordExpires: Date
+    }
 });
 
 const myDb = mongoose.connection.useDb('SPCLOGIN');

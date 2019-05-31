@@ -10,6 +10,7 @@ const User = require('../models/User');
 //const Question = require('../models/Questions');
 const mailSetup = require('../config/mailSetup');
 
+const Question = require('../models/Questions');
 
 router.get('/login', (req, res) => res.render('login',{
     title: 'Login'          // title for page Login
@@ -232,5 +233,22 @@ router.post('/reset/:token', function(req, res) {
   });
 });
 
+
+router.post('/addquestion', (req, res) => {
+  //console.log(req.body);
+  const newQues = new Question({
+    qtype: req.body.quetype,
+    category: req.body.selectCategory,
+    question: req.body.textarea1
+  });
+
+  newQues.save()
+  .then(
+    newQues => {
+      req.flash('success_msg', 'Question successfully added!');
+      res.redirect('/users/addquestion');
+  })
+  .catch(err => console.log(err));
+});
 
 module.exports = router;

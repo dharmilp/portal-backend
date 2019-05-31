@@ -78,8 +78,8 @@
                     <div style="align-content: left" class="row mt-5">
                             <div style="align-content: left" class="col-md-6 m-auto">
                               <div class="card card-body">
-                                
-                                <form action="/users/questionbank" method="POST">
+                                  <% include ./partials/messages %>
+                                <form action="/users/addquestion" method="POST">
                                   <div class="form-group">
                                     <label for="quetype">Question Type</label>
                                     <select
@@ -89,8 +89,8 @@
                                       class="form-control"
                                       size="1"
                                     >
-                                    <option value="MultipleChoiceSingleAnswer">Multiple Choice Single Answer</option>
-                                    <option value="MultipleChoiceMultipleAnswer">Multiple Choice Multiple Answer</option>
+                                    <option value="Multiple Choice Single Answer">Multiple Choice Single Answer</option>
+                                    <option value="Multiple Choice Multiple Answer">Multiple Choice Multiple Answer</option>
                                     <option value="Matching">Matching</option>
                                     </select>
                                   </div>
@@ -103,38 +103,24 @@
                                       class="form-control"
                                       size="1"
                                     >
-                                    <option value="it">IT</option>
+                                    <option value="IT">IT</option>
                                     <option value="Aptitude">Aptitude</option>
                                     <option value="General">General</option>
                                     </select>
                                   </div>
                                   <div class="form-group">
-                                    <label for="password">Password</label>
-                                    <input
-                                      type="password"
-                                      id="password"
-                                      name="password"
-                                      class="form-control"
-                                      placeholder="Create Password"
-                                      value="<%= typeof password != 'undefined' ? password : '' %>"
-                                    />
-                                  </div>
-                                  <div class="form-group">
-                                    <label for="password2">Confirm Password</label>
-                                    <input
-                                      type="password"
-                                      id="password2"
-                                      name="password2"
-                                      class="form-control"
-                                      placeholder="Confirm Password"
-                                      value="<%= typeof password2 != 'undefined' ? password2 : '' %>"
-                                    />
+                                    <label for="question">Question</label>
+                                    <textarea 
+                                      id="textarea1"
+                                      type="question"
+                                      name="textarea1"
+                                      class="form-control"></textarea>
                                   </div>
                                   <button type="submit" class="btn btn-primary btn-block">
-                                    Register
+                                    Add
                                   </button>
                                 </form>
-                                <p class="lead mt-4">Have An Account? <a href="/users/login">Login</a></p>
+                                <!-- <p class="lead mt-4">Have An Account? <a href="/users/login">Login</a></p> -->
                               </div>
                             </div>
                           </div>
@@ -157,3 +143,8 @@
     <script src="../assets/js/core/popper.min.js"></script>
     <script src="../assets/js/core/bootstrap.min.js"></script>
     <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+
+    <script src="../ckeditor/ckeditor.js"></script>
+    <script>
+      CKEDITOR.replace('textarea1');
+    </script>
