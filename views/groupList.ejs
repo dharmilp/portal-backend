@@ -47,7 +47,7 @@
           </a>
         </li>
         <li class="active">
-          <a href="#">
+          <a href="users/settings">
             <i class="fa fa-cog" aria-hidden="true"></i>
             <p>Settings</p>
           </a>
@@ -67,18 +67,18 @@
       <div class="container-fluid">
         <div class="navbar-wrapper">
           
-          <a class="navbar-brand" href="#">Settings</a>
+          <a class="navbar-brand" href="/users/settings">Settings</a>
         </div>
         <div class="collapse navbar-collapse justify-content-end" id="navigation">
         </div>
       </div>
     </nav>
     <div class="content">
+        <% include ./partials/messages %>
         <div class="col-md-12">
             <div class="card">
               <div class="card-header">
                 <h4 class="card-title"> Groups</h4>
-                <!-- <a href="/users/addquestion" class="btn btn-primary btn-round">Add Question</a> -->
               </div>
               <div class="card-body">
                 <div class="table-responsive">
@@ -87,6 +87,8 @@
                       <th>
                         Name
                       </th>
+                      <th></th>
+                      <th></th>
                     </thead>
                     <tbody>
                         
@@ -95,9 +97,14 @@
                             <td>
                                 <%=groups[i].name%>
                             </td>
+                            <td>
+                              <a href="/groups/delete/<%=groups[i]._id%>?page=<%=current%>" class="btn btn-primary btn-round">DELETE</a>
+                            </td>
+                            <td>
+                                <a href="/groups/groupEdit/<%=groups[i]._id%>?page=<%=current%>" class="btn btn-primary btn-round">EDIT</a>
+                            </td>
                         </tr>
-                    <% } %>
-        
+                    <% } %>        
                     </tbody>
                   </table>
                 </div>
