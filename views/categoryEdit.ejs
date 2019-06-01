@@ -1,0 +1,114 @@
+<div class="">
+    <div class="wrapper ">
+      <div class="sidebar" data-color="#2E4F9B" data-active-color="primary">
+      <!--
+          Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow"
+      -->
+        <div class="logo">
+          <div class="simple-text logo-normal" style="text-align: center">
+              Welcome Admin
+          </div>
+        </div>
+        <div class="sidebar-wrapper">
+          <ul class="nav">
+            <li >
+              <a href="/admin">
+                <i class="nc-icon nc-bank"></i>
+                <p>Dashboard</p>
+              </a>
+            </li>
+            <li >
+              <a href="/users/auser">
+                <i class="far fa-user"></i>
+                <p>Users</p>
+              </a>
+            </li>
+            <li>
+              <a href="/users/questionbank">
+                <i class="nc-icon nc-bank"></i>
+                <p>Question Bank</p>
+              </a>
+            </li>
+            <li >
+              <a href="/users/aquiz">
+                <i class="nc-icon nc-bank"></i>
+                <p>Quiz</p>
+              </a>
+            </li>
+            <li >
+              <a href="/users/aresult">
+                <i class="nc-icon nc-bank"></i>
+                <p>Results</p>
+              </a>
+            </li>
+            <li >
+              <a href="/users/amyaccount">
+                <i class="nc-icon nc-bank"></i>
+                <p>My account</p>
+              </a>
+            </li>
+            <li class="active">
+              <a href="/users/settings">
+                <i class="fa fa-cog" aria-hidden="true"></i>
+                <p>Settings</p>
+              </a>
+            </li>
+            <li>
+              <a href="/users/logout">
+                <i class="fa fa-sign-out" aria-hidden="true"></i>
+                <p>Logout</p>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="main-panel">
+            <!-- Navbar -->
+            <nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
+              <div class="container-fluid">
+                <div class="navbar-wrapper">
+                  
+                  <a class="navbar-brand" href="#">Edit Category</a>
+                </div>
+                <div class="collapse navbar-collapse justify-content-end" id="navigation">
+                </div>
+              </div>
+            </nav>
+            <div class="content1">
+                    <div style="align-content: left" class="row mt-5">
+                            <div style="align-content: left" class="col-md-6 m-auto">
+                              
+                              <div class="card card-body">
+                                <form action="/categories/categoryUpdate/<%=id%>?page=<%=pageNum%>" method="POST">
+                                  <div class="form-group">
+                                    <label for="newCategoryName">Category name</label>
+                                    <input class="form-control" placeholder="Enter new name" name="newCategoryName" type="text" AutoComplete=off>                                        
+                                  </div>
+                                  <button type="submit" class="btn btn-primary btn-block">
+                                    Update
+                                  </button>
+                                </form>
+                                <!-- <p class="lead mt-4">Have An Account? <a href="/users/login">Login</a></p> -->
+                              </div>
+                              <a href="/categories?page=<%=pageNum%>" class="btn btn-primary btn-round">BACK</a>
+                            </div>
+                          </div>
+            </div>
+
+          </div>
+        </div>
+</div>
+    
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <!-- CSS Files -->
+    <link href="../../assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../assets/css/paper-dashboard.css" rel="stylesheet" />
+    
+    <!--   Core JS Files   -->
+    <script src="../../assets/js/core/jquery.min.js"></script>
+    <script src="../../assets/js/core/popper.min.js"></script>
+    <script src="../../assets/js/core/bootstrap.min.js"></script>
+    <script src="../../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
