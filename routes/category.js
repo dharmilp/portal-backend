@@ -25,15 +25,36 @@ router.get('/',ensureAuthenticated, function(req, res, next) {
         });
 });
 
+router.post('/',ensureAuthenticated, function(req, res, next) {
+    const pageNum = req.query.page || 1;
+
+    var newCategory = new Categories({
+        name:req.body.newCategoryName
+    });
+    newCategory.save()
+    .then((newcategory) => {
+        req.flash('success_msg','category added successfully');
+        const path = '/categories?page=' + pageNum; 
+        res.redirect(path);
+    })
+    .catch((err) => {
+        req.flash('error_msg','Something went wrong');
+        console.log(err);
+        res.redirect('/groups');
+    });
+});
+
 router.get('/delete/:id',ensureAuthenticated, function(req, res, next) {
     const id = req.params.id;
     const pageNum = req.query.page || 1;
     Categories.findByIdAndRemove(id)
     .then((category) => {
+        req.flash('success_msg','category deleted successfully');
         const path = '/categories?page=' + pageNum; 
         res.redirect(path);
     })
     .catch((err) => {
+        req.flash('error_msg','Something went wrong');
         console.log(err);
         res.redirect('/categories');
     });
@@ -51,11 +72,13 @@ router.get('/categoryEdit/:id',ensureAuthenticated, function(req, res, next) {
 router.post('/categoryUpdate/:id',ensureAuthenticated, function(req, res, next) {
     const id = req.params.id;
     const pageNum = req.query.page || 1;
-    Categories.findOneAndUpdate(id,{ $set: { name: req.body.newCategoryName } },(err,category) => {
+    Categories.findByIdAndUpdate(id,{ $set: { name: req.body.newCategoryName } },(err,category) => {
         if(err) {
+            req.flash('error_msg','Something went wrong');
             console.log(err);
             res.redirect('/categories');
         } else {
+            req.flash('success_msg','category updated successfully');
             const path = '/categories?page=' + pageNum; 
             res.redirect(path);
         }
