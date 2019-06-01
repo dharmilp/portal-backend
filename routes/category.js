@@ -51,7 +51,7 @@ router.get('/categoryEdit/:id',ensureAuthenticated, function(req, res, next) {
 router.post('/categoryUpdate/:id',ensureAuthenticated, function(req, res, next) {
     const id = req.params.id;
     const pageNum = req.query.page || 1;
-    Categories.findOneAndUpdate(id,{ $set: { name: req.body.newCategoryName } },(err,category) => {
+    Categories.findByIdAndUpdate(id,{ $set: { name: req.body.newCategoryName } },(err,category) => {
         if(err) {
             console.log(err);
             res.redirect('/categories');
