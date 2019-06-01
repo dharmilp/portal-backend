@@ -39,10 +39,32 @@ router.get('/auser', (req,res) => res.render('auser',{
   name: "",
   title: 'Users'
 }));
-router.get('/questionbank', (req,res) => res.render('questionbank',{
-  name: "",
-  title: 'Question Bank'
-}));
+
+
+
+router.get('/questionbank', (req, res, next) => {
+    var perPage = 9;
+    var page = req.query.page || 1;
+    Question
+            .find({})
+            .skip((perPage * page) - perPage)
+            .limit(perPage)
+            .exec(function(err, questions) {
+            Question.count().exec(function(err, count) {
+            if (err) return next(err)
+            res.render('questionbank',{
+            name: "",
+            questions: questions,
+            current: page,
+            docType: 'questions',
+            pages: Math.ceil(count / perPage),
+            title: 'Question Bank'
+          });
+        });
+    });
+});
+
+
 router.get('/settings', (req,res) => res.render('settings',{
   name: "",
   title: 'Settings'
@@ -130,7 +152,7 @@ router.post('/signup', (req, res) => {
 router.post('/login', (req, res, next) => {
     var str = req.body.studentId;
     var adm = "Admin";
-    console.log(str);
+    //console.log(str);
     passport.authenticate('local', {
       successRedirect: str.localeCompare(adm)==0 ? '/admin':'/dashboard',
       failureRedirect: '/users/login',
@@ -235,11 +257,16 @@ router.post('/reset/:token', function(req, res) {
 
 
 router.post('/addquestion', (req, res) => {
-  //console.log(req.body);
-  const newQues = new Question({
+  console.log(req.body);
+    const newQues = new Question({
     qtype: req.body.quetype,
     category: req.body.selectCategory,
-    question: req.body.textarea1
+    question: req.body.textarea1,
+    option1: req.body.textarea2,
+    option2: req.body.textarea3,
+    option3: req.body.textarea4,
+    option4: req.body.textarea5,
+    answer: req.body.score
   });
 
   newQues.save()

@@ -116,9 +116,72 @@
                                       name="textarea1"
                                       class="form-control"></textarea>
                                   </div>
-                                  <button type="submit" class="btn btn-primary btn-block">
+                                  <div class="form-group">
+                                      <table>
+                                        <tr>
+                                          <td>
+                                            <label>Options</label>
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td>
+                                            1) 
+                                            <input id="radiobtn" type="radio" value="1" name="score" checked>
+                                          </td>
+                                          <td>
+                                              <textarea 
+                                              id="textarea2"
+                                              type="option1"
+                                              name="textarea2"
+                                              class="form-control"></textarea>
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                              2) 
+                                              <input id="radiobtn" type="radio" value="2" name="score">
+                                            </td>
+                                            <td>
+                                                <textarea 
+                                                id="textarea3"
+                                                type="option2"
+                                                name="textarea3"
+                                                class="form-control"></textarea>
+                                            </td>
+                                          </tr>
+                                          <tr>
+                                              <td>
+                                                3) 
+                                                <input id="radiobtn" type="radio" value="3" name="score">
+                                              </td>
+                                              <td>
+                                                  <textarea 
+                                                  id="textarea4"
+                                                  type="option3"
+                                                  name="textarea4"
+                                                  class="form-control"></textarea>
+                                              </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                  4) 
+                                                  <input id="radiobtn" type="radio" value="4" name="score">
+                                                </td>
+                                                <td>
+                                                    <textarea 
+                                                    id="textarea5"
+                                                    type="option4"
+                                                    name="textarea5"
+                                                    class="form-control"></textarea>
+                                                </td>
+                                              </tr>
+                                      </table>
+                                    </div>
+                                    
+                                  <button type="submit" class="btn btn-primary btn-round">
                                     Add
                                   </button>
+                                  <a href="/users/questionbank" class="btn btn-primary btn-round">Back</a>
                                 </form>
                                 <!-- <p class="lead mt-4">Have An Account? <a href="/users/login">Login</a></p> -->
                               </div>
@@ -147,4 +210,8 @@
     <script src="../ckeditor/ckeditor.js"></script>
     <script>
       CKEDITOR.replace('textarea1');
+      CKEDITOR.replace('textarea2');
+      CKEDITOR.replace('textarea3');
+      CKEDITOR.replace('textarea4');
+      CKEDITOR.replace('textarea5');
     </script>

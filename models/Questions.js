@@ -14,11 +14,31 @@ const QuestionSchema = new mongoose.Schema({
     question: {
         type: Object,
         required: true
+    },
+    option1: {
+        type: Object,
+        required: true
+    },
+    option2: {
+        type: Object,
+        required: true
+    },
+    option3: {
+        type: Object,
+        required: true
+    },
+    option4: {
+        type: Object,
+        required: true
+    },
+    answer: {
+        type: String,
+        required: true
     }
 });
 
 const myDb = mongoose.connection.useDb('SPCPortal');
-const Questions = myDb.model('Question', QuestionSchema);
+const Questions = myDb.model('QuestionWithAnswer', QuestionSchema);
 
 //export default User;
 module.exports = Questions;
