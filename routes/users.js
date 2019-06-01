@@ -85,8 +85,9 @@ router.get('/amyaccount', (req,res) => res.render('amyaccount',{
 
 router.get('/addquestion', (req,res) => res.render('addques',{
   name: "",
-  title: 'Account'
+  title: 'Add question'
 }));
+
 
 
 router.post('/signup', (req, res) => {

@@ -52,7 +52,7 @@ app.use((req,res,next) => {
 app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/users'));
 app.use('/groups',require('./routes/groups'));
-
+app.use('/quiz',require('./routes/quiz'));
 
 
 const PORT = process.env.PORT || 5000;
