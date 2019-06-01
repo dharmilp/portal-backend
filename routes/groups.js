@@ -51,7 +51,7 @@ router.get('/groupEdit/:id',ensureAuthenticated, function(req, res, next) {
 router.post('/groupUpdate/:id',ensureAuthenticated, function(req, res, next) {
     const id = req.params.id;
     const pageNum = req.query.page || 1;
-    Group.findOneAndUpdate(id,{ $set: { name: req.body.newGroupName } },(err,group) => {
+    Group.findByIdAndUpdate(id,{ $set: { name: req.body.newGroupName } },(err,group) => {
         if(err) {
             console.log(err);
             res.redirect('/groups');

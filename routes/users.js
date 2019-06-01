@@ -5,12 +5,14 @@ const passport = require('passport');
 const crypto = require('crypto');
 const async = require('async');
 const nodemailer = require('nodemailer');
+const { ensureAuthenticated } = require('../config/auth');
 
 const User = require('../models/User');
 //const Question = require('../models/Questions');
 const mailSetup = require('../config/mailSetup');
 
 const Question = require('../models/Questions');
+const Quiz = require('../models/Quiz');
 
 router.get('/login', (req, res) => res.render('login',{
     title: 'Login'          // title for page Login
@@ -62,6 +64,49 @@ router.get('/questionbank', (req, res, next) => {
           });
         });
     });
+});
+
+router.get('/addQuizQuestion', (req, res, next) => {
+  var perPage = 9;
+  var page = req.query.page || 1;
+  Question
+          .find({})
+          .skip((perPage * page) - perPage)
+          .limit(perPage)
+          .exec(function(err, questions) {
+          Question.count().exec(function(err, count) {
+          if (err) return next(err)
+          res.render('addQuizQuestion',{
+          name: "",
+          questions: questions,
+          current: page,
+          docType: 'questions',
+          pages: Math.ceil(count / perPage)
+        });
+      });
+  });
+});
+
+router.get('/aquiz', (req, res, next) => {
+  var perPage = 9;
+  var page = req.query.page || 1;
+  Quiz
+          .find({})
+          .skip((perPage * page) - perPage)
+          .limit(perPage)
+          .exec(function(err, quiz) {
+          Quiz.count().exec(function(err, count) {
+          if (err) return next(err)
+          res.render('aquiz',{
+          name: "",
+          quiz: quiz,
+          current: page,
+          docType: 'quiz',
+          pages: Math.ceil(count / perPage),
+          title: 'Quiz'
+        });
+      });
+  });
 });
 
 
