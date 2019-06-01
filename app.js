@@ -52,6 +52,7 @@ app.use((req,res,next) => {
 app.use('/', require('./routes/index'));
 app.use('/users', require('./routes/users'));
 app.use('/groups',require('./routes/groups'));
+app.use('/categories',require('./routes/category'));
 
 
 

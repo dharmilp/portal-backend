@@ -22,15 +22,15 @@ router.get('/forgot', (req,res) => res.render('forgot',{
     title: 'Reset Password'
 }));
 router.get('/uquiz', (req,res) => res.render('uquiz',{
-  name: "",
+  name: req.query.username,
   title: 'Quiz'
 }));
 router.get('/uresult', (req,res) => res.render('uresult',{
-  name: "",
+  name: req.query.username,
   title: 'Result'
 }));
 router.get('/umyaccount', (req,res) => res.render('umyaccount',{
-  name: "",
+  name: req.query.username,
   title: 'Account'
 }));
 

@@ -1,0 +1,157 @@
+<div class="wrapper ">
+        <div class="sidebar" data-color="#2E4F9B" data-active-color="primary">
+        <!--
+            Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow"
+        -->
+          <div class="logo">
+            <div class="simple-text logo-normal" style="text-align: center">
+                Welcome Admin
+            </div>
+          </div>
+          <div class="sidebar-wrapper">
+            <ul class="nav">
+              <li >
+                <a href="/admin">
+                  <i class="nc-icon nc-bank"></i>
+                  <p>Dashboard</p>
+                </a>
+              </li>
+              <li >
+                <a href="/users/auser">
+                  <i class="far fa-user"></i>
+                  <p>Users</p>
+                </a>
+              </li>
+              <li >
+                <a href="/users/questionbank">
+                  <i class="nc-icon nc-bank"></i>
+                  <p>Question Bank</p>
+                </a>
+              </li>
+              <li >
+                <a href="/users/aquiz">
+                  <i class="nc-icon nc-bank"></i>
+                  <p>Quiz</p>
+                </a>
+              </li>
+              <li >
+                <a href="/users/aresult">
+                  <i class="nc-icon nc-bank"></i>
+                  <p>Results</p>
+                </a>
+              </li>
+              <li >
+                <a href="/users/amyaccount">
+                  <i class="nc-icon nc-bank"></i>
+                  <p>My account</p>
+                </a>
+              </li>
+              <li class="active">
+                <a href="users/settings">
+                  <i class="fa fa-cog" aria-hidden="true"></i>
+                  <p>Settings</p>
+                </a>
+              </li>
+              <li>
+                <a href="/users/logout">
+                  <i class="fa fa-sign-out" aria-hidden="true"></i>
+                  <p>Logout</p>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="main-panel">
+          <!-- Navbar -->
+          <nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
+            <div class="container-fluid">
+              <div class="navbar-wrapper">
+                
+                <a class="navbar-brand" href="/users/settings">Settings</a>
+              </div>
+              <div class="collapse navbar-collapse justify-content-end" id="navigation">
+              </div>
+            </div>
+          </nav>
+          <div class="content">
+              <% include ./partials/messages %>
+              <div class="col-md-12">
+                  <div class="card">
+                    <div class="card-header">
+                      <h4 class="card-title"> Categories</h4>
+                    </div>
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table">
+                          <thead class=" text-primary">
+                            <th>
+                              Name
+                            </th>
+                            <th></th>
+                            <th></th>
+                          </thead>
+                          <tbody>
+                              
+                          <% for (var i = 0; i < categories.length; i++) { %>
+                              <tr>
+                                  <td>
+                                      <%=categories[i].name%>
+                                  </td>
+                                  <td>
+                                    <a href="/categories/delete/<%=categories[i]._id%>?page=<%=current%>" class="btn btn-primary btn-round">DELETE</a>
+                                  </td>
+                                  <td>
+                                      <a href="/categories/categoryEdit/<%=categories[i]._id%>?page=<%=current%>" class="btn btn-primary btn-round">EDIT</a>
+                                  </td>
+                              </tr>
+                          <% } %>        
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <% if (pages > 0) { %>
+                    <div class="pagination text-center">
+                        <% if (current == 1) { %>
+                            <a class="page-numbers">First</a>
+                        <% } else { %>
+                            <a class="page-numbers" href="/<%=docType%>?page=1">First</a>
+                        <% } %>
+                        <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                        <% if (i !== 1) { %>
+                            <a class="page-numbers">...</a>
+                        <% } %>
+                        <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                            <% if (i == current) { %>
+                                <a class="active page-numbers"><%= i %></a>
+                            <% } else { %>
+                                <a class="page-numbers" href="/<%=docType%>?page=<%= i %>"><%= i %></a>
+                            <% } %>
+                            <% if (i == Number(current) + 4 && i < pages) { %>
+                                <a class="page-numbers">...</a>
+                            <% } %>
+                        <% } %>
+                        <% if (current == pages) { %>
+                            <a class="page-numbers">Last</a>
+                        <% } else { %>
+                            <a class="page-numbers" href="/<%=docType%>?page=<%= pages %>">Last</a>
+                        <% } %>
+                    </div>
+                  <% } %>
+                </div>
+          </div>
+        </div>
+      </div>
+      
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+      <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+      <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+      <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+      <link href="assets/css/paper-dashboard.css?v=2.0.0" rel="stylesheet" />
+      <link rel="stylesheet" href="pagination.css">
+      
+      <script src="assets/js/core/jquery.min.js"></script>
+      <script src="assets/js/core/popper.min.js"></script>
+      <script src="assets/js/core/bootstrap.min.js"></script>
+      <script src="assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+      <script src="assets/js/plugins/bootstrap-notify.js"></script>
