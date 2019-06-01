@@ -13,27 +13,42 @@ router.get('/addquiz',ensureAuthenticated, function(req, res, next){
         res.render('addquiz',{
             name: "",
             title: 'Add quiz',
-            groups:groups 
+            groups: groups 
         });
     });
 });
 
 
 router.post('/addquiz',ensureAuthenticated, function(req, res, next ){
-    const { name, startDate, startTime, duration, percentageToPass, assignToGroups, addQuestions } = req.body;
+    const { name, startDate, duration, percentageToPass, assignToGroups, addQuestions } = req.body;
     let errors = [];
-    //console.log(req.body);
+    console.log(req.body);
     if(!name || !startDate || !duration || !percentageToPass || !assignToGroups || !addQuestions )
         errors.push({ msg: 'Please fill all the fields' });
         if(errors.length > 0)
         {
-            res.render('addquiz', { 
-                name,
-                errors, 
-                startDate, 
-                duration,
-                percentageToPass 
-            });
+            Group
+                .find({})
+                .exec(function(err, groups){
+                    //console.log(groups);
+                    res.render('addquiz',{
+                        name,
+                        errors,
+                        startDate,
+                        duration,
+                        percentageToPass,
+                        name: "",
+                        title: 'Add quiz',
+                        groups: groups 
+                    });
+                });
+            // res.render('addquiz', { 
+            //     name,
+            //     errors, 
+            //     startDate, 
+            //     duration,
+            //     percentageToPass 
+            // });
         }
         else
         {
