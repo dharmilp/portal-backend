@@ -5,12 +5,14 @@ const passport = require('passport');
 const crypto = require('crypto');
 const async = require('async');
 const nodemailer = require('nodemailer');
+const { ensureAuthenticated } = require('../config/auth');
 
 const User = require('../models/User');
 //const Question = require('../models/Questions');
 const mailSetup = require('../config/mailSetup');
 
 const Question = require('../models/Questions');
+const Quiz = require('../models/Quiz');
 
 router.get('/login', (req, res) => res.render('login',{
     title: 'Login'          // title for page Login
@@ -35,10 +37,28 @@ router.get('/umyaccount', (req,res) => res.render('umyaccount',{
 }));
 
 
-router.get('/auser', (req,res) => res.render('auser',{
-  name: "",
-  title: 'Users'
-}));
+router.get('/auser', (req,res,next) => { 
+
+  var perPage = 9;
+  var page = req.query.page || 1;
+  User
+          .find({})
+          .skip((perPage * page) - perPage)
+          .limit(perPage)
+          .exec(function(err, users) {
+          Question.count().exec(function(err, count) {
+          if (err) return next(err)
+          res.render('auser',{
+          name: "",
+          users: users,
+          current: page,
+          docType: 'users',
+          pages: Math.ceil(count / perPage),
+          title: 'Users'
+        });
+      });
+  });
+});
 
 
 
@@ -56,12 +76,55 @@ router.get('/questionbank', (req, res, next) => {
             name: "",
             questions: questions,
             current: page,
-            docType: 'questions',
+            docType: 'users/questionbank',
             pages: Math.ceil(count / perPage),
             title: 'Question Bank'
           });
         });
     });
+});
+
+router.get('/addQuizQuestion', (req, res, next) => {
+  var perPage = 9;
+  var page = req.query.page || 1;
+  Question
+          .find({})
+          .skip((perPage * page) - perPage)
+          .limit(perPage)
+          .exec(function(err, questions) {
+          Question.count().exec(function(err, count) {
+          if (err) return next(err)
+          res.render('addQuizQuestion',{
+          name: "",
+          questions: questions,
+          current: page,
+          docType: 'questions',
+          pages: Math.ceil(count / perPage)
+        });
+      });
+  });
+});
+
+router.get('/aquiz', (req, res, next) => {
+  var perPage = 9;
+  var page = req.query.page || 1;
+  Quiz
+          .find({})
+          .skip((perPage * page) - perPage)
+          .limit(perPage)
+          .exec(function(err, quiz) {
+          Quiz.count().exec(function(err, count) {
+          if (err) return next(err)
+          res.render('aquiz',{
+          name: "",
+          quiz: quiz,
+          current: page,
+          docType: 'quiz',
+          pages: Math.ceil(count / perPage),
+          title: 'Quiz'
+        });
+      });
+  });
 });
 
 
@@ -89,6 +152,49 @@ router.get('/addquestion', (req,res) => res.render('addques',{
 }));
 
 
+router.get('/delete/:id', function(req, res, next) {
+  const id = req.params.id;
+  const pageNum = req.query.page || 1;
+  Question.findByIdAndRemove(id)
+  .then((group) => {
+      const path = '/users/questionbank?page=' + pageNum; 
+      res.redirect(path);
+  })
+  .catch((err) => {
+      console.log(err);
+      res.redirect('/users/questionbank');
+  });
+});
+
+router.get('/questionEdit/:id', function(req, res, next) {
+  const id = req.params.id;
+  const pageNum = req.query.page || 1;
+  res.render('questionEdit',{
+      id:id,
+      pageNum:pageNum
+  });
+});
+
+router.post('/questionUpdate/:id', function(req, res, next) {
+  const id = req.params.id;
+  const pageNum = req.query.page || 1;
+  Question.findByIdAndUpdate(id,{ $set: { qtype: req.body.quetype, 
+                                          category: req.body.selectCategory,
+                                          question: req.body.textarea1,
+                                          option1: req.body.textarea2,
+                                          option2: req.body.textarea3,
+                                          option3: req.body.textarea4,
+                                          option4: req.body.textarea5,
+                                          answer: req.body.score } },(err,group) => {
+      if(err) {
+          console.log(err);
+          res.redirect('/users/questionbank');
+      } else {
+          const path = '/users/questionbank?page=' + pageNum; 
+          res.redirect(path);
+      }
+  });
+});
 
 router.post('/signup', (req, res) => {
     const { name, studentId, email, password, password2 } = req.body;

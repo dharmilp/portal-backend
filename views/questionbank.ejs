@@ -94,6 +94,9 @@
                           <th>
                             Category
                           </th>
+                          <th>
+                            Actions
+                          </th>
                         </thead>
                         <tbody>
                             
@@ -107,6 +110,10 @@
                                   </td>
                                   <td>
                                       <%=questions[i].category%>
+                                  </td>
+                                  <td>
+                                    <a href="/users/delete/<%=questions[i]._id%>?page=<%=current%>" class="btn btn-primary btn-round">Delete</a>
+                                    <a href="/users/questionEdit/<%=questions[i]._id%>?page=<%=current%>" class="btn btn-primary btn-round">Edit</a>
                                   </td>
                               </tr>
                           <% } %>
