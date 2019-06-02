@@ -33,7 +33,7 @@ router.post('/',ensureAuthenticated, function(req, res, next) {
     });
     newGroup.save()
     .then((newgroup) => {
-        req.flash('success_msg','group added successfully');
+        req.flash('success_msg','Group added successfully!');
         const path = '/groups?page=' + pageNum; 
         res.redirect(path);
     })
@@ -49,7 +49,7 @@ router.get('/delete/:id',ensureAuthenticated, function(req, res, next) {
     const pageNum = req.query.page || 1;
     Group.findByIdAndRemove(id)
     .then((group) => {
-        req.flash('success_msg','group deleted successfully');
+        req.flash('success_msg','Group deleted successfully!');
         const path = '/groups?page=' + pageNum; 
         res.redirect(path);
     })
@@ -80,7 +80,7 @@ router.post('/groupUpdate/:id',ensureAuthenticated, function(req, res, next) {
             console.log(err);
             res.redirect('/groups');
         } else {
-            req.flash('success_msg','group updated successfully');
+            req.flash('success_msg','Group updated successfully!');
             const path = '/groups?page=' + pageNum; 
             res.redirect(path);
         }
