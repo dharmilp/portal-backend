@@ -42,4 +42,17 @@ router.get('/admin', ensureAuthenticated, (req, res, next) =>{
     // })
 });
 
+const Quiz = require('../models/Quiz');
+router.get('/qi', (req, res) => {
+    const id = '5cf3b2e8d497a12bfc651744';
+    Quiz.findById(id)
+    .exec((err,quiz) => {
+        console.log(quiz);
+        res.render('quizInstruction', {
+            name: 'ff',
+            title: 'qi',      // title for page Admin Dashboard
+            quizinfo: quiz
+        });
+    })
+});
 module.exports = router;

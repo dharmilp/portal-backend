@@ -6,6 +6,7 @@ const crypto = require('crypto');
 const async = require('async');
 const nodemailer = require('nodemailer');
 const { ensureAuthenticated } = require('../config/auth');
+const Group = require('../models/Groups');
 
 const User = require('../models/User');
 //const Question = require('../models/Questions');
@@ -17,9 +18,23 @@ const Quiz = require('../models/Quiz');
 router.get('/login', (req, res) => res.render('login',{
     title: 'Login'          // title for page Login
 }));
-router.get('/signup', (req, res) => res.render('signup',{
-    title: 'Register'       // title for page register
-}));
+router.get('/signup', (req, res) => {
+  Group.find({})
+  .exec((err,groups) => {
+    if(err)
+    {
+      console.log(err);
+      res.redirect('/signup');
+    }
+    else
+    {
+      res.render('signup',{
+        title: 'Register',       // title for page register
+        groups: groups
+      });
+    }
+  });
+});
 router.get('/forgot', (req,res) => res.render('forgot',{
     title: 'Reset Password'
 }));
@@ -197,7 +212,7 @@ router.post('/questionUpdate/:id', function(req, res, next) {
 });
 
 router.post('/signup', (req, res) => {
-    const { name, studentId, email, password, password2 } = req.body;
+    const { name, studentId, email, password, password2,group } = req.body;
     let errors = [];
 
     if(!name || !studentId || !email || !password || !password2)
@@ -211,34 +226,43 @@ router.post('/signup', (req, res) => {
 
     if(errors.length > 0)
     {
+      Group.find({})
+      .exec((err,groups) => {
         res.render('signup', { 
-            studentId,
-            errors, 
-            name, 
-            email 
+          studentId,
+          errors, 
+          name, 
+          email,
+          groups
         });
+      })
     }
     else
     {
         User.findOne({ email: email })
         .then(user => {
             if(user){
-                errors.push({ msg: 'Email is already registered' });
+              errors.push({ msg: 'Email is already registered' });
+              Group.find({})
+              .exec((err, groups) => {
                 res.render('signup', { 
-                    errors, 
-                    name,
-                    studentId, 
-                    email, 
-                    password, 
-                    password2 
+                  errors, 
+                  name,
+                  studentId, 
+                  email, 
+                  password, 
+                  password2,
+                  groups 
                 });
+              })
             }
             else{
                 const newUser = new User({
                     name,
                     studentId,
                     email,
-                    password
+                    password,
+                    group
                 });  
                 bcrypt.genSalt(10, (err, salt) => 
                     bcrypt.hash(newUser.password, salt, (err, hash) => {
