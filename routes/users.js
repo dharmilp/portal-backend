@@ -46,13 +46,13 @@ router.get('/auser', (req,res,next) => {
           .skip((perPage * page) - perPage)
           .limit(perPage)
           .exec(function(err, users) {
-          Question.count().exec(function(err, count) {
+          User.count().exec(function(err, count) {
           if (err) return next(err)
           res.render('auser',{
           name: "",
           users: users,
           current: page,
-          docType: 'users',
+          docType: 'users/auser',
           pages: Math.ceil(count / perPage),
           title: 'Users'
         });
@@ -148,7 +148,7 @@ router.get('/amyaccount', (req,res) => res.render('amyaccount',{
 
 router.get('/addquestion', (req,res) => res.render('addques',{
   name: "",
-  title: 'Add question'
+  title: 'Add Question'
 }));
 
 
@@ -171,7 +171,8 @@ router.get('/questionEdit/:id', function(req, res, next) {
   const pageNum = req.query.page || 1;
   res.render('questionEdit',{
       id:id,
-      pageNum:pageNum
+      pageNum:pageNum,
+      title: "Edit Question"
   });
 });
 

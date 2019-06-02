@@ -79,8 +79,7 @@ router.post('/addquiz',ensureAuthenticated, function(req, res, next ){
             duration: req.body.duration,
             startDate: req.body.startDate,
             percentageToPass: req.body.percentageToPass,
-            assignToGroups: req.body.assignToGroups,
-            addQuestions: req.body.addQuestions
+            assignToGroups: req.body.assignToGroups
             });
         
             newQuiz.save()
@@ -140,8 +139,7 @@ router.get('/quizEdit/:id',ensureAuthenticated, function(req, res, next) {
       duration: req.body.duration,
       startDate: req.body.startDate,
       percentageToPass: req.body.percentageToPass,
-      assignToGroups: req.body.assignToGroups,
-      addQuestions: req.body.addQuestions } },(err,quiz) => {
+      assignToGroups: req.body.assignToGroups } },(err,quiz) => {
         if(err) {
             console.log(err);
             res.redirect('/users/aquiz');
@@ -152,8 +150,17 @@ router.get('/quizEdit/:id',ensureAuthenticated, function(req, res, next) {
     });
   });
   
-router.post('/addQuizQuestion',ensureAuthenticated, function(req, res, next) {
-
-})
+router.get('/addQuizQuestion/:id',ensureAuthenticated, function(req, res, next) {
+    const id = req.params.id;
+    const pageNum = req.query.page || 1;
+    //  function change()
+    //  {
+    //      var element = document.getElementById("Add");
+    //      if( element.innerHTML == "ADD" ) element.innerHTML = "ADDED";        
+    //      else if( element.innerHTML == "ADDED" ) element.innerHTML = "ADD";
+    // }
+    console.log(id);
+    res.redirect('/quiz/addQuizQuestion');
+});
 
 module.exports = router;
