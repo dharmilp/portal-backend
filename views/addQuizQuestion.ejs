@@ -1,3 +1,14 @@
+<script>
+    function change() {
+      alert('Fuckk off !!!');
+      console.log("Done");
+      if( innerHTML == "ADD" ) {
+        innerHTML = "ADDED"; 
+      }       
+      else if( innerHTML == "ADDED" ) innerHTML = "ADD";
+    }
+</script>
+
 <div class="">
         <div class="wrapper ">
           <div class="sidebar" data-color="#2E4F9B" data-active-color="primary">
@@ -109,10 +120,10 @@
                                           <%=questions[i].category%>
                                       </td>
                                       <td>
-                                           <a href="/quiz/quizQuestionEdit/<%=questions[i]._id%>?page=<%=current%>" class="btn btn-primary btn-round">EDIT</a>
+                                           <a href="/users/questionEdit/<%=questions[i]._id%>?page=<%=current%>" class="btn btn-primary btn-round">EDIT</a>
                                       </td>
                                       <td>
-                                           <a href="/quiz/quizQuestionAdd/<%=questions[i]._id%>?page=<%=current%>" class="btn btn-primary btn-round">ADD</a>
+                                        <a href="#" ng-click="change()" id = "Add" class="btn btn-primary btn-round" >ADD</a>
                                       </td>
                                   </tr>
                               <% } %>
@@ -154,7 +165,7 @@
               </div>
         </div>
     </div>
-        
+
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
         
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
@@ -170,3 +181,4 @@
         <script src="../assets/js/core/bootstrap.min.js"></script>
         <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
         <script src="../assets/js/plugins/bootstrap-notify.js"></script>
+        <!-- <script src="../Add-added.js"></script> -->
