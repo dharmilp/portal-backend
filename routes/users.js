@@ -46,7 +46,7 @@ router.get('/auser', (req,res,next) => {
           .skip((perPage * page) - perPage)
           .limit(perPage)
           .exec(function(err, users) {
-          Question.count().exec(function(err, count) {
+          User.count().exec(function(err, count) {
           if (err) return next(err)
           res.render('auser',{
           name: "",
