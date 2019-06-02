@@ -75,6 +75,15 @@
       </nav>
       <div class="content">
           <% include ./partials/messages %>
+          <div>
+              <a href="javascript:hideShow('AddForm')" class="btn btn-primary btn-round">Add New</a>
+              <div class="form-group" id="AddForm" style="display: none">
+              <form method="post" action="/categories?page=<%=current%>">
+                <input class="form-control" id="inputBox" placeholder="Enter new categoryname" name="newCategoryName" type="text" AutoComplete=off>
+                <button type="submit" class="btn btn-primary btn-round">ADD</button>
+              </form>
+              </div>
+          </div>
           <div class="col-md-12">
               <div class="card">
                 <div class="card-header">
@@ -155,3 +164,4 @@
   <script src="assets/js/core/bootstrap.min.js"></script>
   <script src="assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
   <script src="assets/js/plugins/bootstrap-notify.js"></script>
+  <script src="hideShowToggle.js"></script>
