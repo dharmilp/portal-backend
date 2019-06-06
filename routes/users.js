@@ -99,26 +99,26 @@ router.get('/questionbank', (req, res, next) => {
     });
 });
 
-router.get('/addQuizQuestion', (req, res, next) => {
-  var perPage = 9;
-  var page = req.query.page || 1;
-  Question
-          .find({})
-          .skip((perPage * page) - perPage)
-          .limit(perPage)
-          .exec(function(err, questions) {
-          Question.count().exec(function(err, count) {
-          if (err) return next(err)
-          res.render('addQuizQuestion',{
-          name: "",
-          questions: questions,
-          current: page,
-          docType: 'questions',
-          pages: Math.ceil(count / perPage)
-        });
-      });
-  });
-});
+// router.get('/addQuizQuestion', (req, res, next) => {
+//   var perPage = 9;
+//   var page = req.query.page || 1;
+//   Question
+//           .find({})
+//           .skip((perPage * page) - perPage)
+//           .limit(perPage)
+//           .exec(function(err, questions) {
+//           Question.count().exec(function(err, count) {
+//           if (err) return next(err)
+//           res.render('addQuizQuestion',{
+//           name: "",
+//           questions: questions,
+//           current: page,
+//           docType: 'questions',
+//           pages: Math.ceil(count / perPage)
+//         });
+//       });
+//   });
+// });
 
 router.get('/aquiz', (req, res, next) => {
   var perPage = 9;
