@@ -5,7 +5,7 @@
     -->
       <div class="logo">
         <div class="simple-text logo-normal" style="text-align: center">
-            Welcome <%= name %>
+            Welcome <%= session.userInfo.name %>
         </div>
       </div>
       <div class="sidebar-wrapper">
@@ -17,7 +17,7 @@
             </a>
           </li>
           <li class="active">
-            <a href="/users/uquiz?username=<%= name %>">
+            <a href="/users/uquiz">
               <i class="nc-icon nc-bank"></i>
               <p>Quiz</p>
             </a>
@@ -29,7 +29,7 @@
             </a>
           </li>
           <li >
-            <a href="/users/umyaccount?username=<%= name %>">
+            <a href="/users/umyaccount">
               <i class="nc-icon nc-bank"></i>
               <p>My account</p>
             </a>
@@ -62,7 +62,7 @@
                   <h4 class="card-title"> Quiz Information</h4>
                 </div>
                 <div class="card-body">
-                  <div class="table-responsive">
+                  <div class="table">
                     <table class="table">
                       <tbody>
                           
@@ -114,6 +114,7 @@
                       </tbody>
                     </table>
                   </div>
+                  <a href="/quiz/attempt/<%=quizinfo._id%>" class="btn btn-primary btn-round">Go To Questions</a>
                 </div>
               </div>
           </div>
@@ -124,11 +125,11 @@
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
   <!-- CSS Files -->
-  <link href="../assets/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="../assets/css/paper-dashboard.css" rel="stylesheet" />
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="../../assets/css/paper-dashboard.css" rel="stylesheet" />
   
   <!--   Core JS Files   -->
-  <script src="../assets/js/core/jquery.min.js"></script>
-  <script src="../assets/js/core/popper.min.js"></script>
-  <script src="../assets/js/core/bootstrap.min.js"></script>
-  <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+  <script src="../../assets/js/core/jquery.min.js"></script>
+  <script src="../../assets/js/core/popper.min.js"></script>
+  <script src="../../assets/js/core/bootstrap.min.js"></script>
+  <script src="../../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>

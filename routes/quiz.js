@@ -323,4 +323,23 @@ router.post('/addquestion', (req, res) => {
     .catch(err => console.log(err));
   });
 
+router.get('/attempt/:id',(req,res) => {
+    const id = req.params.id;
+    const path = '/quizlive' + id;
+    Quiz.findById(id)
+    .select({
+        "_id": 1,
+        "name": 1,
+        "duration": 1,
+        startDate: 1,
+        percentageToPass: 1
+        })
+    .exec((err,quiz) => {
+        console.log(quiz);
+        if(err) throw err;
+        res.render('quizInstruction',{
+            quizinfo: quiz
+        });
+    });
+});
 module.exports = router;
