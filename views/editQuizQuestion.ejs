@@ -116,8 +116,8 @@
                                 <td>
                                   <%
                                       
-                                        var addStateText = "ADD";
-                                        var addStateClass = "btn btn-primary btn-round";
+                                      var addStateText = "ADD";
+                                      var addStateClass = "btn btn-primary btn-round";
                                       if(typeof session.quizEditQuestionList != 'undefined')
                                       {
                                         for( var j = 0 ; j < session.quizEditQuestionList.length ; j++ )
@@ -139,7 +139,7 @@
                       </tbody>
                     </table>
                   </div>
-                  <a href="/quiz/edit" class="btn btn-primary btn-round">Go Back To Quiz</a>
+                  <a href="/quiz/quizEdit/<%=session.quizEditInfo._id%>" class="btn btn-primary btn-round">Go Back To Quiz</a>
                 </div>
               </div>
               <% if (pages > 0) { %>
