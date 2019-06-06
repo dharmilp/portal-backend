@@ -48,9 +48,26 @@ router.get('/forgot', (req,res) => res.render('forgot',{
     title: 'Reset Password'
 }));
 router.get('/uquiz', (req,res) => {
-  Quiz.find()
-  res.render('uquiz',{
-    title: 'Quiz'
+  const perPage = 9;
+  const pageNum = req.query.page || 1;
+  Quiz.find({"assignToGroups" : req.session.userInfo.group})
+  .select({
+      "_id": 1,
+      "name": 1,
+      "duration": 1,
+      startDate: 1
+    })
+  .exec((err,quiz) => {
+    console.log(quiz);
+    if(err) throw err;
+    const count = quiz.length;
+    res.render('uquiz',{
+      title: 'Quiz',
+      quizzes: quiz,
+      current: pageNum,
+      docType: 'users/uquiz',
+      pages: Math.ceil(count / perPage)
+    });
   });
 });
 router.get('/uresult', (req,res) => res.render('uresult',{
