@@ -21,13 +21,13 @@ mongoose.connect(db, {useNewUrlParser: true})
 mongoose.set('useCreateIndex', true);
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended : false}));
+app.use(bodyParser.urlencoded({extended : true}));
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
 app.set("layout extractScripts", true);
 app.set("layout extractStyles", true);
 
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));//false
 
 // static files
 app.use( express.static( "public" ) );

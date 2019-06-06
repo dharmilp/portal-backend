@@ -134,7 +134,7 @@ router.get('/aquiz', (req, res, next) => {
           name: "",
           quiz: quiz,
           current: page,
-          docType: 'quiz',
+          docType: 'users/aquiz',
           pages: Math.ceil(count / perPage),
           title: 'Quiz'
         });
