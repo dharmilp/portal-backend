@@ -21,7 +21,7 @@ router.get('/addQuizQuestion', (req,res) => {
                 res.render('addQuizQuestion', {
                     questions: questions,
                     current: page,
-                    docType: 'questions',
+                    docType: 'quiz/addQuizQuestion',
                     pages: Math.ceil(count / perPage)
                 });
             });
@@ -305,4 +305,51 @@ router.get('/editQuizRemove/:id',ensureAuthenticated, function(req, res, next) {
     res.redirect(path);
 });
 
+router.get('/addquestion', (req,res) => res.render('addquestionquiz',{
+    name: "",
+    title: 'Add Question'
+  }));
+
+
+router.post('/addquestion', (req, res) => {
+    console.log(req.body);
+      const newQues = new Questions({
+      qtype: req.body.quetype,
+      category: req.body.selectCategory,
+      question: req.body.textarea1,
+      option1: req.body.textarea2,
+      option2: req.body.textarea3,
+      option3: req.body.textarea4,
+      option4: req.body.textarea5,
+      answer: req.body.score
+    });
+  
+    newQues.save()
+    .then(
+      newQues => {
+        req.flash('success_msg', 'Question successfully added!');
+        res.redirect('/quiz/addquestion');
+    })
+    .catch(err => console.log(err));
+  });
+
+router.get('/attempt/:id',(req,res) => {
+    const id = req.params.id;
+    const path = '/quizlive' + id;
+    Quiz.findById(id)
+    .select({
+        "_id": 1,
+        "name": 1,
+        "duration": 1,
+        startDate: 1,
+        percentageToPass: 1
+        })
+    .exec((err,quiz) => {
+        console.log(quiz);
+        if(err) throw err;
+        res.render('quizInstruction',{
+            quizinfo: quiz
+        });
+    });
+});
 module.exports = router;

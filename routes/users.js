@@ -15,9 +15,18 @@ const mailSetup = require('../config/mailSetup');
 const Question = require('../models/Questions');
 const Quiz = require('../models/Quiz');
 
-router.get('/login', (req, res) => res.render('login',{
-    title: 'Login'          // title for page Login
-}));
+router.get('/login', (req, res) => {
+  if(typeof req.session.userInfo == 'undefined')
+  {
+    res.render('login',{
+      title: 'Login'          // title for page Login
+    });
+  }
+  else
+  {
+    res.redirect('/dashboard');
+  }
+});
 router.get('/signup', (req, res) => {
   Group.find({})
   .exec((err,groups) => {
@@ -38,16 +47,33 @@ router.get('/signup', (req, res) => {
 router.get('/forgot', (req,res) => res.render('forgot',{
     title: 'Reset Password'
 }));
-router.get('/uquiz', (req,res) => res.render('uquiz',{
-  name: req.query.username,
-  title: 'Quiz'
-}));
+router.get('/uquiz', (req,res) => {
+  const perPage = 9;
+  const pageNum = req.query.page || 1;
+  Quiz.find({"assignToGroups" : req.session.userInfo.group})
+  .select({
+      "_id": 1,
+      "name": 1,
+      "duration": 1,
+      startDate: 1
+    })
+  .exec((err,quiz) => {
+    console.log(quiz);
+    if(err) throw err;
+    const count = quiz.length;
+    res.render('uquiz',{
+      title: 'Quiz',
+      quizzes: quiz,
+      current: pageNum,
+      docType: 'users/uquiz',
+      pages: Math.ceil(count / perPage)
+    });
+  });
+});
 router.get('/uresult', (req,res) => res.render('uresult',{
-  name: req.query.username,
   title: 'Result'
 }));
 router.get('/umyaccount', (req,res) => res.render('umyaccount',{
-  name: req.query.username,
   title: 'Account'
 }));
 
@@ -99,26 +125,26 @@ router.get('/questionbank', (req, res, next) => {
     });
 });
 
-router.get('/addQuizQuestion', (req, res, next) => {
-  var perPage = 9;
-  var page = req.query.page || 1;
-  Question
-          .find({})
-          .skip((perPage * page) - perPage)
-          .limit(perPage)
-          .exec(function(err, questions) {
-          Question.count().exec(function(err, count) {
-          if (err) return next(err)
-          res.render('addQuizQuestion',{
-          name: "",
-          questions: questions,
-          current: page,
-          docType: 'questions',
-          pages: Math.ceil(count / perPage)
-        });
-      });
-  });
-});
+// router.get('/addQuizQuestion', (req, res, next) => {
+//   var perPage = 9;
+//   var page = req.query.page || 1;
+//   Question
+//           .find({})
+//           .skip((perPage * page) - perPage)
+//           .limit(perPage)
+//           .exec(function(err, questions) {
+//           Question.count().exec(function(err, count) {
+//           if (err) return next(err)
+//           res.render('addQuizQuestion',{
+//           name: "",
+//           questions: questions,
+//           current: page,
+//           docType: 'questions',
+//           pages: Math.ceil(count / perPage)
+//         });
+//       });
+//   });
+// });
 
 router.get('/aquiz', (req, res, next) => {
   var perPage = 9;
@@ -294,6 +320,7 @@ router.post('/login', (req, res, next) => {
 
 router.get('/logout', (req, res) => {
     req.logout();
+    req.session.userInfo = undefined;
     req.flash('success_msg', 'You are Logged Out');
     res.redirect('/users/login');
 });
