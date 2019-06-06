@@ -22,10 +22,12 @@ function AddRemove(id)
 function editAddRemove(id)
 {
     // when document is ready load this function
+    console.log("success");
     $(document).ready(function() {
         var reqAddr = '/quiz/editQuizQuestion/' + id;
         // jQuery styled get request
         $.get(reqAddr,function(data,status) {
+            console.log("Success");
             if( document.getElementById(id).innerHTML == "ADD" )
             {
                 document.getElementById(id).innerHTML = "ADDED";

@@ -6,6 +6,7 @@ const Questions = require('../models/Questions');
 const { ensureAuthenticated } = require('../config/auth');
 const moment = require('moment');
 const mongoose = require('mongoose');
+var cnt = 0;
 
 router.get('/addQuizQuestion', (req,res) => {
     var perPage = 9;
@@ -138,7 +139,7 @@ router.get('/quizDelete/:id',ensureAuthenticated, function(req, res, next) {
         res.redirect(path);
     })
     .catch((err) => {
-        console.log(err);
+        // console.log(err);
         res.redirect('/users/aquiz');
     });
   });
@@ -148,28 +149,33 @@ router.get('/quizEdit/:id',ensureAuthenticated, function(req, res, next) {
     const pageNum = req.query.page || 1;
     
     req.session.quizEditQuestionList = req.session.quizEditQuestionList || [];
-    req.session.quizEditInfo = req.session.quizEditInfo || [];
     Group
     .find({})
     .exec(function(err, groups){
         //console.log(groups);
         Quiz.findById(id).exec(function(err, quiz) {
-            req.session.quizEditInfo = quiz;
-            for(var i=0;i<quiz.addQuestions.length;i++)
-                req.session.quizEditQuestionList.push(quiz.addQuestions[i]._id);
-
-            const questionTempArr = req.session.questionIdList || [];
-            var queryArr = [];
-            for(var i=0;i<questionTempArr.length;i++)
-                queryArr.push(mongoose.Types.ObjectId(questionTempArr[i]));
-            
-            Questions.find({ _id: { $in : queryArr } },(err,questions) => {
+            req.session.quizEditInfo = req.session.quizEditInfo || quiz;
+            if( cnt == 0 )
+            {
+                for(var i=0;i<req.session.quizEditInfo.addQuestions.length;i++)
+                {
+                    req.session.quizEditQuestionList.push(req.session.quizEditInfo.addQuestions[i]._id);
+                }
+            }
+            // console.log(req.session.quizEditQuestionList);
+            const questionTempArr1 = req.session.quizEditQuestionList || [];
+            var queryArr1 = [];
+            for(var i=0;i<questionTempArr1.length;i++)
+                queryArr1.push(mongoose.Types.ObjectId(questionTempArr1[i]));   
+            //console.log(queryArr1); 
+            Questions.find({ _id: { $in : queryArr1 } },(err,questions) => {
+                //console.log(questions);
                 res.render('quizEdit',{
                     quiz:quiz,
                     pageNum:pageNum,
                     groups: groups,
                     moment:moment, 
-                    questions: questions
+                    questions: questions,
                 });
             });
         });
@@ -204,7 +210,7 @@ router.post('/quizUpdate/:id',ensureAuthenticated, function(req, res, next) {
         assignToGroups: req.body.assignToGroups,
         addQuestions: req.session.quizEditQuestionList } },(err,quiz) => {
         if(err) {
-            console.log(err);
+            // console.log(err);
             res.redirect('/users/aquiz');
         } else {
             req.session.quizEditQuestionList = undefined;
@@ -231,12 +237,12 @@ router.get('/addQuizQuestion/:id',ensureAuthenticated, function(req, res, next) 
     if(index == -1)
     {
         req.session.questionIdList.push(id);
-        console.log('index = -1');
+        // console.log('index = -1');
     }
     else
     {
         req.session.questionIdList.splice(index,1);
-        console.log('index is present');
+        // console.log('index is present');
     }
     res.redirect('/quiz/addQuizQuestion');
 });
@@ -256,12 +262,12 @@ router.get('/addQuizRemove/:id',ensureAuthenticated, function(req, res, next) {
     if(index == -1)
     {
         req.session.questionIdList.push(id);
-        console.log('index = -1');
+        // console.log('index = -1');
     }
     else
     {
         req.session.questionIdList.splice(index,1);
-        console.log('index is present');
+        // console.log('index is present');
     }
     if(req.session.questionIdList.length == 0)
         req.session.questionIdList = undefined;
@@ -270,29 +276,33 @@ router.get('/addQuizRemove/:id',ensureAuthenticated, function(req, res, next) {
 
 router.get('/editQuizRemove/:id',ensureAuthenticated, function(req, res, next) {
     const id = req.params.id;
-    req.session.questionEditQuestionList = req.session.questionEditQuestionList || [];
+    req.session.quizEditQuestionList = req.session.quizEditQuestionList || [];
     var index = -1;
-    for(var i=0;i<req.session.questionEditQuestionList.length;i++)
+    for(var i=0;i<req.session.quizEditQuestionList.length;i++)
     {
-        if(req.session.questionEditQuestionList[i].localeCompare(id) == 0)
+        if(req.session.quizEditQuestionList[i].localeCompare(id) == 0)
         {
             index = i;
             break;
         }
     }
+    // console.log(index);
     if(index == -1)
     {
-        req.session.questionEditQuestionList.push(id);
-        console.log('index = -1');
+        req.session.quizEditQuestionList.push(id);
+        // console.log('index = -1');
     }
     else
     {
-        req.session.questionEditQuestionList.splice(index,1);
-        console.log('index is present');
+        req.session.quizEditQuestionList.splice(index,1);
+        cnt++;
+        //console.log(req.session.quizEditQuestionList.length);
+        // console.log('index is present');
     }
-    if(req.session.questionEditQuestionList.length == 0)
-        req.session.questionEditQuestionList = undefined;
-    res.redirect('/quiz/quizEdit');
+    if(req.session.quizEditQuestionList.length == 0)
+        req.session.quizEditQuestionList = undefined;
+    const path = '/quiz/quizEdit/' + req.session.quizEditInfo._id;
+    res.redirect(path);
 });
 
 module.exports = router;

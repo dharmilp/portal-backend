@@ -1,3 +1,5 @@
+<!-- <% console.log() %> -->
+
 <div class="">
     <div class="wrapper ">
       <div class="sidebar" data-color="#2E4F9B" data-active-color="primary">
@@ -13,37 +15,37 @@
           <ul class="nav">
             <li >
               <a href="/admin">
-                <i class="nc-icon nc-bank"></i>
+                <i class="fas fa-tachometer-alt"></i>
                 <p>Dashboard</p>
               </a>
             </li>
             <li >
               <a href="/users/auser">
-                <i class="far fa-user"></i>
+                <i class="fas fa-male"></i>
                 <p>Users</p>
               </a>
             </li>
             <li>
               <a href="/users/questionbank">
-                <i class="nc-icon nc-bank"></i>
+                <i class="fas fa-question-circle"></i>
                 <p>Question Bank</p>
               </a>
             </li>
             <li class="active">
               <a href="/users/aquiz">
-                <i class="nc-icon nc-bank"></i>
+                <i class="fas fa-tasks"></i>
                 <p>Quiz</p>
               </a>
             </li>
             <li >
               <a href="/users/aresult">
-                <i class="nc-icon nc-bank"></i>
+                <i class="fas fa-poll"></i>
                 <p>Results</p>
               </a>
             </li>
             <li >
               <a href="/users/amyaccount">
-                <i class="nc-icon nc-bank"></i>
+                <i class="fas fa-user-circle"></i>
                 <p>My account</p>
               </a>
             </li>
@@ -88,7 +90,7 @@
                                         name="name"
                                         class="form-control"
                                         placeholder="Enter Quiz Name"
-                                        value="<%= (typeof session.quizEditInfo != 'undefined' && typeof session.quizInfo.name != 'undefined') ? session.quizEditInfo.name : '' %>"
+                                        value="<%= (typeof session.quizEditInfo != 'undefined' && typeof session.quizEditInfo.name != 'undefined') ? session.quizEditInfo.name : '' %>"
                                     />
                                   </div>
                                   <div class="form-group">
@@ -156,7 +158,7 @@
                                   <div class="form-group">
                                       <input type="submit" name="buttonType" value="Add Questions Manually" class="btn btn-info btn-round"></input>
                                   </div> 
-                                  <% if(typeof session.questionEditQuestionList != 'undefined')
+                                  <% if( session.quizEditQuestionList.length != 0 )
                                   {
                                     %>
                                       <table class="table">
