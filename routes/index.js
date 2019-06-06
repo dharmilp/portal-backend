@@ -8,10 +8,13 @@ const Quiz = require('../models/Quiz');
 router.get('/', (req, res) => res.render('welcome',{
     title: 'Welcome'        // title for page Welcome
 }));
-router.get('/dashboard', ensureAuthenticated, (req, res) => res.render('dashboard', {
-    name: req.user.name,
-    title: 'Dashboard'      // title for page Dashboard
-}));
+router.get('/dashboard', ensureAuthenticated, (req, res) => {
+    req.session.userInfo = req.session.userInfo || req.user;
+    res.render('dashboard', {
+        name: req.user.name,
+        title: 'Dashboard'      // title for page Dashboard
+    })
+});
 
 router.get('/admin', ensureAuthenticated, (req, res, next) =>{
 

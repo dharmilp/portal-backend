@@ -15,9 +15,18 @@ const mailSetup = require('../config/mailSetup');
 const Question = require('../models/Questions');
 const Quiz = require('../models/Quiz');
 
-router.get('/login', (req, res) => res.render('login',{
-    title: 'Login'          // title for page Login
-}));
+router.get('/login', (req, res) => {
+  if(typeof req.session.userInfo == 'undefined')
+  {
+    res.render('login',{
+      title: 'Login'          // title for page Login
+    });
+  }
+  else
+  {
+    res.redirect('/dashboard');
+  }
+});
 router.get('/signup', (req, res) => {
   Group.find({})
   .exec((err,groups) => {
@@ -38,16 +47,16 @@ router.get('/signup', (req, res) => {
 router.get('/forgot', (req,res) => res.render('forgot',{
     title: 'Reset Password'
 }));
-router.get('/uquiz', (req,res) => res.render('uquiz',{
-  name: req.query.username,
-  title: 'Quiz'
-}));
+router.get('/uquiz', (req,res) => {
+  Quiz.find()
+  res.render('uquiz',{
+    title: 'Quiz'
+  });
+});
 router.get('/uresult', (req,res) => res.render('uresult',{
-  name: req.query.username,
   title: 'Result'
 }));
 router.get('/umyaccount', (req,res) => res.render('umyaccount',{
-  name: req.query.username,
   title: 'Account'
 }));
 
@@ -294,6 +303,7 @@ router.post('/login', (req, res, next) => {
 
 router.get('/logout', (req, res) => {
     req.logout();
+    req.session.userInfo = undefined;
     req.flash('success_msg', 'You are Logged Out');
     res.redirect('/users/login');
 });

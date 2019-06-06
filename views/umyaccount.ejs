@@ -5,7 +5,7 @@
   -->
     <div class="logo">
       <div class="simple-text logo-normal" style="text-align: center">
-          Welcome <%= name %>
+          Welcome <%= session.userInfo.name %>
       </div>
     </div>
     <div class="sidebar-wrapper">
@@ -17,13 +17,13 @@
           </a>
         </li>
         <li >
-          <a href="/users/uquiz?username=<%= name %>">
+          <a href="/users/uquiz">
             <i class="nc-icon nc-bank"></i>
             <p>Quiz</p>
           </a>
         </li>
         <li >
-          <a href="/users/uresult?username=<%= name %>">
+          <a href="/users/uresult">
             <i class="nc-icon nc-bank"></i>
             <p>Result</p>
           </a>
