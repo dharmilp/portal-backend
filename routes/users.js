@@ -440,6 +440,20 @@ router.get('/addquestion', (req,res) => res.render('addques',{
   title: 'Add Question'
 }));
 
+router.get('/usersdelete/:id', function(req, res, next) {
+  const id = req.params.id;
+  const pageNum = req.query.page || 1;
+  User.findByIdAndRemove(id)
+  .then((group) => {
+      const path = '/users/auser?page=' + pageNum; 
+      res.redirect(path);
+  })
+  .catch((err) => {
+      console.log(err);
+      res.redirect('/users/auser');
+  });
+});
+
 
 router.get('/delete/:id', function(req, res, next) {
   const id = req.params.id;

@@ -94,6 +94,9 @@
                       <th>
                         Email
                       </th>
+                      <th>
+                        Action
+                      </th>
                     </thead>
                     <tbody>
                         
@@ -107,6 +110,9 @@
                               </td>
                               <td>
                                   <%=users[i].email%>
+                              </td>
+                              <td>
+                                <a href="/users/usersdelete/<%=users[i]._id%>?page=<%=current%>" class="btn btn-primary btn-round">Delete</a>
                               </td>
                           </tr>
                       <% } %>
