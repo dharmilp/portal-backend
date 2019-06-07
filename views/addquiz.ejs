@@ -94,14 +94,14 @@
                                   <div class="form-group">
                                     <label for="startDate">Quiz Start Date</label>
                                     <input
-                                      type="datetime-local"
+                                      type="datetime"
                                       id="startDate"
                                       name="startDate"
                                       class="form-control"
                                       placeholder="YYYY/MM/DD HH:MM:SS"
                                       value="<%= 
                                       (typeof session.quizInfo != 'undefined' && typeof session.quizInfo.startDate != 'undefined')
-                                      ?(typeof InstallTrigger == 'undefined'?session.quizInfo.startDate:moment(session.quizInfo.startDate).format('YYYY/MM/DD h:mm:ss'))
+                                      ? moment(new Date(session.quizInfo.startDate.toString())).format('YYYY/MM/DD h:mm:ss')
                                       :'' %>"
                                     />
                                   <div>

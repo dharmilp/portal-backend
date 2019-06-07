@@ -461,6 +461,7 @@ router.get('/delete/:id', function(req, res, next) {
   Question.findByIdAndRemove(id)
   .then((group) => {
       const path = '/users/questionbank?page=' + pageNum; 
+      req.flash("success_msg","Question deleted successfully");
       res.redirect(path);
   })
   .catch((err) => {
@@ -472,10 +473,14 @@ router.get('/delete/:id', function(req, res, next) {
 router.get('/questionEdit/:id', function(req, res, next) {
   const id = req.params.id;
   const pageNum = req.query.page || 1;
-  res.render('questionEdit',{
+  Question.findById(id)
+  .then((question) => {
+    res.render('questionEdit',{
       id:id,
+      question:question,
       pageNum:pageNum,
       title: "Edit Question"
+    });
   });
 });
 
@@ -522,7 +527,8 @@ router.post('/signup', (req, res) => {
           errors, 
           name, 
           email,
-          groups
+          groups,
+          title: "Register"
         });
       })
     }

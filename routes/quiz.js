@@ -22,6 +22,7 @@ router.get('/addQuizQuestion', (req,res) => {
                     questions: questions,
                     current: page,
                     docType: 'quiz/addQuizQuestion',
+                    title: "Add Question to Quiz",
                     pages: Math.ceil(count / perPage)
                 });
             });
@@ -42,6 +43,7 @@ router.get('/editQuizQuestion', (req,res) => {
                     questions: questions,
                     current: page,
                     docType: 'questions',
+                    title: "Edit Question of Quiz",
                     pages: Math.ceil(count / perPage)
                 });
             });
@@ -143,7 +145,7 @@ router.post('/addquiz',ensureAuthenticated, function(req, res, next ){
                 req.flash('success_msg', 'Quiz successfully added!');
                 req.session.quizInfo = undefined;
                 req.session.questionIdList = undefined;
-                res.redirect('/quiz/addquiz');
+                res.redirect('/users/aquiz');
             })
             .catch(err => {
                 req.flash('error_msg','Wrong Format');
@@ -198,7 +200,8 @@ router.get('/quizEdit/:id',ensureAuthenticated, function(req, res, next) {
                     pageNum:pageNum,
                     groups: groups,
                     moment:moment, 
-                    questions: questions
+                    questions: questions,
+                    title: "Edit Quiz",
                 });
             });
         });
@@ -355,6 +358,33 @@ router.post('/addquestion', (req, res) => {
     .catch(err => console.log(err));
   });
 
+  router.get('/editAddQuestion', (req,res) => res.render('editAddQuestionQuiz',{
+    name: "",
+    title: 'Add Question'
+  }));
+
+
+router.post('/editAddQuestion', (req, res) => {
+      const newQues = new Questions({
+      qtype: req.body.quetype,
+      category: req.body.selectCategory,
+      question: req.body.textarea1,
+      option1: req.body.textarea2,
+      option2: req.body.textarea3,
+      option3: req.body.textarea4,
+      option4: req.body.textarea5,
+      answer: req.body.score
+    });
+  
+    newQues.save()
+    .then(
+      newQues => {
+        req.flash('success_msg', 'Question successfully added!');
+        res.redirect('/quiz/editQuizQuestion');
+    })
+    .catch(err => console.log(err));
+  });
+
 router.get('/attempt/:id',(req,res) => {
     const id = req.params.id;
     const path = '/quizlive' + id;
@@ -369,6 +399,7 @@ router.get('/attempt/:id',(req,res) => {
     .exec((err,quiz) => {
         if(err) throw err;
         res.render('quizInstruction',{
+            title: "Quiz Instructions",
             quizinfo: quiz
         });
     });

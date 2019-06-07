@@ -1,8 +1,3 @@
-<% 
-/*console.log(session.quizEditInfo);
-console.log(session.quizEditQuestionList);*/
-%>
-
 <div class="">
     <div class="wrapper ">
       <div class="sidebar" data-color="#2E4F9B" data-active-color="primary">
@@ -99,14 +94,14 @@ console.log(session.quizEditQuestionList);*/
                                   <div class="form-group">
                                     <label for="startDate">Quiz Start Date</label>
                                     <input
-                                      type="datetime-local"
+                                      type="datetime"
                                       id="startDate"
                                       name="startDate"
                                       class="form-control"
                                       placeholder="YYYY/MM/DD HH:MM:SS"
                                       value="<%= 
                                       (typeof session.quizEditInfo != 'undefined' && typeof session.quizEditInfo.startDate != 'undefined')
-                                      ?(typeof InstallTrigger == 'undefined'?new Date(session.quizEditInfo.startDate.toString()):moment( new Date(session.quizInfo.startDate.toString()) ).format('YYYY/MM/DD h:mm:ss'))
+                                      ?moment(session.quizEditInfo.startDate.toString()).format('YYYY/MM/DD h:mm:ss')
                                       :'' %>"
                                     />
                                   <div>
