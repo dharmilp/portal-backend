@@ -6,6 +6,7 @@ const crypto = require('crypto');
 const async = require('async');
 const nodemailer = require('nodemailer');
 const { ensureAuthenticated } = require('../config/auth');
+const { ensureAuthenticatedAdmin } = require('../config/auth');
 const Group = require('../models/Groups');
 
 const User = require('../models/User');

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { ensureAuthenticated } = require('../config/auth');
+const { ensureAuthenticatedAdmin } = require('../config/auth');
 const User = require('../models/User');
 const Question = require('../models/Questions');
 const Quiz = require('../models/Quiz');

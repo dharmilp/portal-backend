@@ -4,9 +4,9 @@ const Group = require('../models/Groups');
 const Quiz = require('../models/Quiz');
 const Questions = require('../models/Questions');
 const { ensureAuthenticated } = require('../config/auth');
+const { ensureAuthenticatedAdmin } = require('../config/auth');
 const moment = require('moment');
 const mongoose = require('mongoose');
-var cnt = 0;
 
 router.get('/addQuizQuestion', (req,res) => {
     var perPage = 9;
@@ -48,8 +48,31 @@ router.get('/editQuizQuestion', (req,res) => {
         });
 });
 
+router.get('/editQuizQuestion/:id',ensureAuthenticated, function(req, res, next) {
+    const id = req.params.id;
+    const pageNum = req.query.page || 1;
+    req.session.quizEditQuestionList = req.session.quizEditQuestionList || [];
+    var index = -1;
+    for(var i=0;i<req.session.quizEditQuestionList.length;i++)
+    {
+        if(req.session.quizEditQuestionList[i].localeCompare(id) == 0)
+        {
+            index = i;
+            break;
+        }
+    }
+    if(index == -1)
+    {
+        req.session.quizEditQuestionList.push(id);
+    }
+    else
+    {
+        req.session.quizEditQuestionList.splice(index,1);
+    }
+    res.redirect('/quiz/editQuizQuestion');
+});
+
 router.get('/addquiz',ensureAuthenticated, function(req, res, next){
-    //console.log("Redirection success");
     Group
         .find({})
         .exec(function(err, groups){
@@ -139,7 +162,6 @@ router.get('/quizDelete/:id',ensureAuthenticated, function(req, res, next) {
         res.redirect(path);
     })
     .catch((err) => {
-        // console.log(err);
         res.redirect('/users/aquiz');
     });
   });
@@ -147,35 +169,36 @@ router.get('/quizDelete/:id',ensureAuthenticated, function(req, res, next) {
 router.get('/quizEdit/:id',ensureAuthenticated, function(req, res, next) {
     const id = req.params.id;
     const pageNum = req.query.page || 1;
-    
-    req.session.quizEditQuestionList = req.session.quizEditQuestionList || [];
+    if(typeof req.session.quizEditInfo != 'undefined')
+    {
+        if(req.session.quizEditInfo._id.localeCompare(id) != 0)
+        {
+            req.session.quizEditInfo = undefined;
+            req.session.quizEditQuestionList = undefined;
+        }
+    }
     Group
     .find({})
     .exec(function(err, groups){
-        //console.log(groups);
         Quiz.findById(id).exec(function(err, quiz) {
-            req.session.quizEditInfo = req.session.quizEditInfo || quiz;
-            if( cnt == 0 )
+            if(typeof req.session.quizEditInfo == 'undefined')
             {
-                for(var i=0;i<req.session.quizEditInfo.addQuestions.length;i++)
-                {
-                    req.session.quizEditQuestionList.push(req.session.quizEditInfo.addQuestions[i]._id);
-                }
+                req.session.quizEditQuestionList = [];
+                req.session.quizEditInfo = quiz;
+                for(var i=0;i<quiz.addQuestions.length;i++)
+                    req.session.quizEditQuestionList.push(quiz.addQuestions[i]._id);
             }
-            // console.log(req.session.quizEditQuestionList);
-            const questionTempArr1 = req.session.quizEditQuestionList || [];
-            var queryArr1 = [];
-            for(var i=0;i<questionTempArr1.length;i++)
-                queryArr1.push(mongoose.Types.ObjectId(questionTempArr1[i]));   
-            //console.log(queryArr1); 
-            Questions.find({ _id: { $in : queryArr1 } },(err,questions) => {
-                //console.log(questions);
+            var queryArr = [];
+            for(var i=0;i<req.session.quizEditQuestionList.length;i++)
+                queryArr.push(mongoose.Types.ObjectId(req.session.quizEditQuestionList[i]));
+            
+            Questions.find({ _id: { $in : queryArr } },(err,questions) => {
                 res.render('quizEdit',{
                     quiz:quiz,
                     pageNum:pageNum,
                     groups: groups,
                     moment:moment, 
-                    questions: questions,
+                    questions: questions
                 });
             });
         });
@@ -187,7 +210,11 @@ router.post('/quizUpdate/:id',ensureAuthenticated, function(req, res, next) {
     const bt = req.body.buttonType;
     if(bt.localeCompare("Add Questions Manually") == 0)
     {
-        req.session.quizEditInfo = req.body || {} ;
+        req.session.quizEditInfo.name = req.body.name;
+        req.session.quizEditInfo.startDate = req.body.startDate;
+        req.session.quizEditInfo.duration = req.body.duration;
+        req.session.quizEditInfo.percentageToPass = req.body.percentageToPass;
+        req.session.quizEditInfo.assignToGroups = req.body.assignToGroups;
         if(typeof req.session.quizEditInfo != 'undefined' && typeof req.session.quizEditInfo.assignToGroups != 'undefined')
         {
             if((typeof req.session.quizEditInfo.assignToGroups).localeCompare('string') == 0)
@@ -203,21 +230,28 @@ router.post('/quizUpdate/:id',ensureAuthenticated, function(req, res, next) {
     const id = req.params.id;
     const pageNum = req.query.page || 1;
 
-    Quiz.findByIdAndUpdate(id,{ $set: { name: req.body.name,
+    var queryArr = [];
+    for(var i=0;i<req.session.quizEditQuestionList.length;i++)
+        queryArr.push(mongoose.Types.ObjectId(req.session.quizEditQuestionList[i]));
+
+    Questions.find({ _id: { $in : queryArr } },(err,questions) => {
+        Quiz.findByIdAndUpdate(id,{ $set: { name: req.body.name,
         duration: req.body.duration,
         startDate: req.body.startDate,
         percentageToPass: req.body.percentageToPass,
         assignToGroups: req.body.assignToGroups,
-        addQuestions: req.session.quizEditQuestionList } },(err,quiz) => {
-        if(err) {
-            // console.log(err);
-            res.redirect('/users/aquiz');
-        } else {
-            req.session.quizEditQuestionList = undefined;
-            req.session.quizEditInfo = undefined;
-            const path = '/users/aquiz?page=' + pageNum; 
-            res.redirect(path);
-        }
+        addQuestions: questions } },(err,quiz) => {
+            if(err) {
+                req.flash('err_msg',"Something went wrong");
+                res.redirect('/users/aquiz');
+            } else {
+                req.session.quizEditQuestionList = undefined;
+                req.session.quizEditInfo = undefined;
+                const path = '/users/aquiz?page=' + pageNum;
+                req.flash('success_msg',"Quiz updated successfully"); 
+                res.redirect(path);
+            }
+        });
     });
 });
   
@@ -237,12 +271,10 @@ router.get('/addQuizQuestion/:id',ensureAuthenticated, function(req, res, next) 
     if(index == -1)
     {
         req.session.questionIdList.push(id);
-        // console.log('index = -1');
     }
     else
     {
         req.session.questionIdList.splice(index,1);
-        // console.log('index is present');
     }
     res.redirect('/quiz/addQuizQuestion');
 });
@@ -262,12 +294,10 @@ router.get('/addQuizRemove/:id',ensureAuthenticated, function(req, res, next) {
     if(index == -1)
     {
         req.session.questionIdList.push(id);
-        // console.log('index = -1');
     }
     else
     {
         req.session.questionIdList.splice(index,1);
-        // console.log('index is present');
     }
     if(req.session.questionIdList.length == 0)
         req.session.questionIdList = undefined;
@@ -286,21 +316,14 @@ router.get('/editQuizRemove/:id',ensureAuthenticated, function(req, res, next) {
             break;
         }
     }
-    // console.log(index);
     if(index == -1)
     {
         req.session.quizEditQuestionList.push(id);
-        // console.log('index = -1');
     }
     else
     {
         req.session.quizEditQuestionList.splice(index,1);
-        cnt++;
-        //console.log(req.session.quizEditQuestionList.length);
-        // console.log('index is present');
     }
-    if(req.session.quizEditQuestionList.length == 0)
-        req.session.quizEditQuestionList = undefined;
     const path = '/quiz/quizEdit/' + req.session.quizEditInfo._id;
     res.redirect(path);
 });
@@ -312,7 +335,6 @@ router.get('/addquestion', (req,res) => res.render('addquestionquiz',{
 
 
 router.post('/addquestion', (req, res) => {
-    console.log(req.body);
       const newQues = new Questions({
       qtype: req.body.quetype,
       category: req.body.selectCategory,
@@ -345,7 +367,6 @@ router.get('/attempt/:id',(req,res) => {
         percentageToPass: 1
         })
     .exec((err,quiz) => {
-        console.log(quiz);
         if(err) throw err;
         res.render('quizInstruction',{
             quizinfo: quiz

@@ -28,6 +28,7 @@ function editAddRemove(id)
         // jQuery styled get request
         $.get(reqAddr,function(data,status) {
             console.log("Success");
+            console.log(document.getElementById(id).innerHTML);
             if( document.getElementById(id).innerHTML == "ADD" )
             {
                 document.getElementById(id).innerHTML = "ADDED";

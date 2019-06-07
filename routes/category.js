@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Categories = require('../models/Categories');
 const { ensureAuthenticated } = require('../config/auth');
+const { ensureAuthenticatedAdmin } = require('../config/auth');
 
 
 router.get('/',ensureAuthenticated, function(req, res, next) {

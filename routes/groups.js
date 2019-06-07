@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const Group = require('../models/Groups');
 const { ensureAuthenticated } = require('../config/auth');
+const { ensureAuthenticatedAdmin } = require('../config/auth');
 
 
-router.get('/',ensureAuthenticated, function(req, res, next) {
+router.get('/',ensureAuthenticatedAdmin, function(req, res, next) {
     var perPage = 9;
     var page = req.query.page || 1;
 
@@ -25,7 +26,7 @@ router.get('/',ensureAuthenticated, function(req, res, next) {
         });
 });
 
-router.post('/',ensureAuthenticated, function(req, res, next) {
+router.post('/',ensureAuthenticatedAdmin, function(req, res, next) {
     const pageNum = req.query.page || 1;
 
     var newGroup = new Group({
@@ -44,7 +45,7 @@ router.post('/',ensureAuthenticated, function(req, res, next) {
     });
 });
 
-router.get('/delete/:id',ensureAuthenticated, function(req, res, next) {
+router.get('/delete/:id',ensureAuthenticatedAdmin, function(req, res, next) {
     const id = req.params.id;
     const pageNum = req.query.page || 1;
     Group.findByIdAndRemove(id)
@@ -60,7 +61,7 @@ router.get('/delete/:id',ensureAuthenticated, function(req, res, next) {
     });
 });
 
-router.get('/groupEdit/:id',ensureAuthenticated, function(req, res, next) {
+router.get('/groupEdit/:id',ensureAuthenticatedAdmin, function(req, res, next) {
     const id = req.params.id;
     const pageNum = req.query.page || 1;
     res.render('groupEdit',{
@@ -69,7 +70,7 @@ router.get('/groupEdit/:id',ensureAuthenticated, function(req, res, next) {
     });
 });
 
-router.post('/groupUpdate/:id',ensureAuthenticated, function(req, res, next) {
+router.post('/groupUpdate/:id',ensureAuthenticatedAdmin, function(req, res, next) {
     const id = req.params.id;
     console.log(id);
     const pageNum = req.query.page || 1;
