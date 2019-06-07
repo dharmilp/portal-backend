@@ -211,10 +211,14 @@ router.get('/delete/:id', function(req, res, next) {
 router.get('/questionEdit/:id', function(req, res, next) {
   const id = req.params.id;
   const pageNum = req.query.page || 1;
-  res.render('questionEdit',{
+  Question.findById(id)
+  .then((question) => {
+    res.render('questionEdit',{
       id:id,
+      question:question,
       pageNum:pageNum,
       title: "Edit Question"
+    });
   });
 });
 

@@ -1,3 +1,4 @@
+
 <div class="">
     <div class="wrapper ">
       <div class="sidebar" data-color="#2E4F9B" data-active-color="primary">
@@ -103,9 +104,10 @@
                                       class="form-control"
                                       size="1"
                                     >
-                                    <option value="IT">IT</option>
-                                    <option value="Aptitude">Aptitude</option>
-                                    <option value="General">General</option>
+                                    
+                                    <option value="IT" <%= question.category == "IT" ? "selected" : "" %>>IT</option>
+                                    <option value="Aptitude" <%= question.category == "Aptitude" ? "selected" : "" %>>Aptitude</option>
+                                    <option value="General" <%= question.category == "General" ? "selected" : "" %>>General</option>
                                     </select>
                                   </div>
                                   <div class="form-group">
@@ -114,7 +116,9 @@
                                       id="textarea1"
                                       type="question"
                                       name="textarea1"
-                                      class="form-control"></textarea>
+                                      class="form-control"
+                                      value= <div> <%-question.question%> </div> 
+                                    </textarea>
                                   </div>
                                   <div class="form-group">
                                       <table>
@@ -126,53 +130,61 @@
                                         <tr>
                                           <td>
                                             1) 
-                                            <input id="radiobtn" type="radio" value="1" name="score" checked>
+                                            <input id="radiobtn" type="radio" value="1" name="score" <%= question.answer == "1" ? "checked" : "" %>>
                                           </td>
                                           <td>
                                               <textarea 
                                               id="textarea2"
                                               type="option1"
                                               name="textarea2"
-                                              class="form-control"></textarea>
+                                              class="form-control"
+                                              value=<div> <%-question.option1 %> </div>
+                                            </textarea>
                                           </td>
                                         </tr>
                                         <tr>
                                             <td>
                                               2) 
-                                              <input id="radiobtn" type="radio" value="2" name="score">
+                                              <input id="radiobtn" type="radio" value="2" name="score" <%= question.answer == "2" ? "checked" : "" %>>
                                             </td>
                                             <td>
                                                 <textarea 
                                                 id="textarea3"
                                                 type="option2"
                                                 name="textarea3"
-                                                class="form-control"></textarea>
+                                                class="form-control"
+                                                value= <div> <%-question.option2 %> </div>
+                                                </textarea>
                                             </td>
                                           </tr>
                                           <tr>
                                               <td>
                                                 3) 
-                                                <input id="radiobtn" type="radio" value="3" name="score">
+                                                <input id="radiobtn" type="radio" value="3" name="score" <%= question.answer == "3" ? "checked" : "" %>>
                                               </td>
                                               <td>
                                                   <textarea 
                                                   id="textarea4"
                                                   type="option3"
                                                   name="textarea4"
-                                                  class="form-control"></textarea>
+                                                  class="form-control"
+                                                  value=<div> <%-question.option3 %> </div>
+                                                  </textarea>
                                               </td>
                                             </tr>
                                             <tr>
                                                 <td>
                                                   4) 
-                                                  <input id="radiobtn" type="radio" value="4" name="score">
+                                                  <input id="radiobtn" type="radio" value="4" name="score" <%= question.answer == "4" ? "checked" : "" %>>
                                                 </td>
                                                 <td>
                                                     <textarea 
                                                     id="textarea5"
                                                     type="option4"
                                                     name="textarea5"
-                                                    class="form-control"></textarea>
+                                                    class="form-control"
+                                                    value=<div> <%-question.option4 %> </div>
+                                                    </textarea>
                                                 </td>
                                               </tr>
                                       </table>

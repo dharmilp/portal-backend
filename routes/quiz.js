@@ -143,7 +143,7 @@ router.post('/addquiz',ensureAuthenticated, function(req, res, next ){
                 req.flash('success_msg', 'Quiz successfully added!');
                 req.session.quizInfo = undefined;
                 req.session.questionIdList = undefined;
-                res.redirect('/quiz/addquiz');
+                res.redirect('/users/aquiz');
             })
             .catch(err => {
                 req.flash('error_msg','Wrong Format');
@@ -351,6 +351,33 @@ router.post('/addquestion', (req, res) => {
       newQues => {
         req.flash('success_msg', 'Question successfully added!');
         res.redirect('/quiz/addquestion');
+    })
+    .catch(err => console.log(err));
+  });
+
+  router.get('/editAddQuestion', (req,res) => res.render('editAddQuestionQuiz',{
+    name: "",
+    title: 'Add Question'
+  }));
+
+
+router.post('/editAddQuestion', (req, res) => {
+      const newQues = new Questions({
+      qtype: req.body.quetype,
+      category: req.body.selectCategory,
+      question: req.body.textarea1,
+      option1: req.body.textarea2,
+      option2: req.body.textarea3,
+      option3: req.body.textarea4,
+      option4: req.body.textarea5,
+      answer: req.body.score
+    });
+  
+    newQues.save()
+    .then(
+      newQues => {
+        req.flash('success_msg', 'Question successfully added!');
+        res.redirect('/quiz/editQuizQuestion');
     })
     .catch(err => console.log(err));
   });
