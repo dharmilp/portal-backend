@@ -4,9 +4,9 @@ const Group = require('../models/Groups');
 const Quiz = require('../models/Quiz');
 const Questions = require('../models/Questions');
 const { ensureAuthenticated } = require('../config/auth');
+const { ensureAuthenticatedAdmin } = require('../config/auth');
 const moment = require('moment');
 const mongoose = require('mongoose');
-var cnt = 0;
 
 router.get('/addQuizQuestion', (req,res) => {
     var perPage = 9;
@@ -242,11 +242,13 @@ router.post('/quizUpdate/:id',ensureAuthenticated, function(req, res, next) {
         assignToGroups: req.body.assignToGroups,
         addQuestions: questions } },(err,quiz) => {
             if(err) {
+                req.flash('err_msg',"Something went wrong");
                 res.redirect('/users/aquiz');
             } else {
                 req.session.quizEditQuestionList = undefined;
                 req.session.quizEditInfo = undefined;
-                const path = '/users/aquiz?page=' + pageNum; 
+                const path = '/users/aquiz?page=' + pageNum;
+                req.flash('success_msg',"Quiz updated successfully"); 
                 res.redirect(path);
             }
         });
