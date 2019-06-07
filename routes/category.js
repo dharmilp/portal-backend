@@ -20,6 +20,7 @@ router.get('/',ensureAuthenticated, function(req, res, next) {
                     categories: categories,
                     current: page,
                     docType: 'categories',
+                    title: "Categories",
                     pages: Math.ceil(count / perPage)
                 });
             });
@@ -66,6 +67,7 @@ router.get('/categoryEdit/:id',ensureAuthenticated, function(req, res, next) {
     const pageNum = req.query.page || 1;
     res.render('categoryEdit',{
         id:id,
+        title: "Edit Category",
         pageNum:pageNum
     });
 });

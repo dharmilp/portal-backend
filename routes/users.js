@@ -447,6 +447,7 @@ router.get('/delete/:id', function(req, res, next) {
   Question.findByIdAndRemove(id)
   .then((group) => {
       const path = '/users/questionbank?page=' + pageNum; 
+      req.flash("success_msg","Question deleted successfully");
       res.redirect(path);
   })
   .catch((err) => {
@@ -512,7 +513,8 @@ router.post('/signup', (req, res) => {
           errors, 
           name, 
           email,
-          groups
+          groups,
+          title: "Register"
         });
       })
     }

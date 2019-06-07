@@ -22,6 +22,7 @@ router.get('/addQuizQuestion', (req,res) => {
                     questions: questions,
                     current: page,
                     docType: 'quiz/addQuizQuestion',
+                    title: "Add Question to Quiz",
                     pages: Math.ceil(count / perPage)
                 });
             });
@@ -42,6 +43,7 @@ router.get('/editQuizQuestion', (req,res) => {
                     questions: questions,
                     current: page,
                     docType: 'questions',
+                    title: "Edit Question of Quiz",
                     pages: Math.ceil(count / perPage)
                 });
             });
@@ -198,7 +200,8 @@ router.get('/quizEdit/:id',ensureAuthenticated, function(req, res, next) {
                     pageNum:pageNum,
                     groups: groups,
                     moment:moment, 
-                    questions: questions
+                    questions: questions,
+                    title: "Edit Quiz",
                 });
             });
         });
@@ -396,6 +399,7 @@ router.get('/attempt/:id',(req,res) => {
     .exec((err,quiz) => {
         if(err) throw err;
         res.render('quizInstruction',{
+            title: "Quiz Instructions",
             quizinfo: quiz
         });
     });
