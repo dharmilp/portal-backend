@@ -20,6 +20,7 @@ router.get('/',ensureAuthenticatedAdmin, function(req, res, next) {
                     groups: groups,
                     current: page,
                     docType: 'groups',
+                    title: "Groups",
                     pages: Math.ceil(count / perPage)
                 });
             });
@@ -66,6 +67,7 @@ router.get('/groupEdit/:id',ensureAuthenticatedAdmin, function(req, res, next) {
     const pageNum = req.query.page || 1;
     res.render('groupEdit',{
         id:id,
+        title: "Edit Groups",
         pageNum:pageNum
     });
 });

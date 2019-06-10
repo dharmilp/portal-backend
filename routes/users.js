@@ -74,9 +74,134 @@ router.get('/uquiz', (req,res) => {
 router.get('/uresult', (req,res) => res.render('uresult',{
   title: 'Result'
 }));
-router.get('/umyaccount', (req,res) => res.render('umyaccount',{
-  title: 'Account'
-}));
+
+
+// router.get('/umyaccount', (req,res) => res.render('umyaccount',{
+//   title: 'Account'
+// }));
+
+router.get('/umyaccount', (req, res) => {
+  Group.find({})
+  .exec((err,groups) => {
+    if(err)
+    {
+      console.log(err);
+      res.redirect('/users/umyaccount');
+    }
+    else
+    {
+      const { name, studentId, email, password, group } = req.session.userInfo;
+        res.render('umyaccount',{
+          title: 'Account',       // title for page register
+          name,
+          studentId,
+          email,
+          group,
+          groups
+        });
+    }
+  });
+});
+
+router.post('/umyaccount', (req, res) => {
+  const { name, studentId, email, opassword, password, password2, group } = req.body;
+  let errors = [];
+  //console.log(req.body);
+  if(!name || !studentId || !email || !req.body.oldpassword)
+      errors.push({ msg: 'Please fill all the fields' });
+
+  if(password!==password2)
+      errors.push({ msg: 'Password do not match' });
+
+  if(password && password.length < 6)
+      errors.push({ msg: 'Password should be atleast 6 characters' });
+  
+  
+  //res.redirect('/users/amyaccount');
+  ur=req.session.userInfo;
+  if(errors.length > 0)
+  {
+    Group.find({})
+    .exec((err,groups) => {
+      res.render('umyaccount', { 
+        title: 'Account',
+        studentId: ur.studentId,
+        errors, 
+        name, 
+        email,
+        groups
+      });
+    })
+  }
+  else
+  {
+    usr=req.session.userInfo;
+    User.find({studentId: usr.studentId}, function(err, user)  {
+      var x,y;
+      x=req.body.oldpassword;
+      //console.log(user[0]);
+      //console.log(x);
+      bcrypt.compare(req.body.oldpassword, user[0].password, (err, isMatch) => {
+        //if (err) throw err;
+        if (isMatch && req.body.studentId.localeCompare(user[0].studentId)==0) {
+          console.log("Match");
+          if(!req.body.password)
+          {
+            user[0].name=name;
+            user[0].email=email;
+            user[0].group=group;
+            user[0].save()
+                    .then(user => {
+                        req.flash('success_msg', 'Your details are successfully updated');
+                        res.redirect('/users/umyaccount');
+                    })
+                    .catch(err => console.log(err));
+          }
+          else
+          {
+              bcrypt.genSalt(10, (err, salt) => 
+                bcrypt.hash(req.body.password, salt, (err, hash) => {
+                    if(err) throw err;
+                    user[0].name=name;
+                    user[0].email=email;
+                    user[0].group=group;
+                    user[0].password = hash;
+                    user[0].save()
+                    .then(user => {
+                        req.flash('success_msg', 'Your details are successfully updated');
+                        res.redirect('/users/umyaccount');
+                    })
+                    .catch(err => console.log(err));
+            }))
+          }
+        } 
+        else {
+          if(req.body.studentId.localeCompare(user[0].studentId)!=0)
+            errors.push({ msg: 'Student ID cannot be changed' });
+          else
+            errors.push({ msg: 'Password did not match' });
+          console.log("Not Match");
+          Group.find({})
+                .exec((err,groups) => {
+                  res.render('umyaccount', {
+                    title: 'Account', 
+                    studentId: user[0].studentId,
+                    errors, 
+                    name, 
+                    email,
+                    groups
+                  });
+                })
+        }
+      });
+      
+    });
+      //res.redirect('/users/amyaccount');
+  }
+});
+
+
+
 
 
 router.get('/auser', (req,res,next) => { 
@@ -182,16 +307,152 @@ router.get('/aresult', (req,res) => res.render('aresult',{
   name: "",
   title: 'Result'
 }));
-router.get('/amyaccount', (req,res) => res.render('amyaccount',{
-  name: "",
-  title: 'Account'
-}));
+
+
+router.get('/amyaccount', (req, res) => {
+  Group.find({})
+  .exec((err,groups) => {
+    if(err)
+    {
+      console.log(err);
+      res.redirect('/users/amyaccount');
+    }
+    else
+    {
+      User.find({studentId: "Admin"})
+      .exec((err,user) => {
+        const { name, studentId, email, password, group } = user[0];
+        res.render('amyaccount',{
+          title: 'Account',       // title for page register
+          name,
+          studentId,
+          email,
+          group,
+          groups
+        });
+      });
+    }
+  });
+});
+
+
+router.post('/amyaccount', (req, res) => {
+  const { name, studentId, email, opassword, password, password2, group } = req.body;
+  let errors = [];
+  console.log(req.body);
+  if(!name || !studentId || !email || !req.body.oldpassword)
+      errors.push({ msg: 'Please fill all the fields' });
+
+  if(password!==password2)
+      errors.push({ msg: 'Password do not match' });
+
+  if(password && password.length < 6)
+      errors.push({ msg: 'Password should be atleast 6 characters' });
+  
+  
+  //res.redirect('/users/amyaccount');
+  
+  if(errors.length > 0)
+  {
+    Group.find({})
+    .exec((err,groups) => {
+      res.render('amyaccount', { 
+        title: 'Account',
+        studentId: 'Admin',
+        errors, 
+        name, 
+        email,
+        groups
+      });
+    })
+  }
+  else
+  {
+    User.find({studentId: "Admin"}, function(err, user)  {
+          var x,y;
+          x=req.body.oldpassword;
+          //console.log(user[0]);
+          //console.log(x);
+          bcrypt.compare(req.body.oldpassword, user[0].password, (err, isMatch) => {
+            //if (err) throw err;
+            if (isMatch && req.body.studentId.localeCompare(user[0].studentId)==0) {
+              console.log("Match");
+              if(!req.body.password)
+              {
+                user[0].name=name;
+                user[0].email=email;
+                user[0].group=group;
+                user[0].save()
+                        .then(user => {
+                            req.flash('success_msg', 'Your details are successfully updated');
+                            res.redirect('/users/amyaccount');
+                        })
+                        .catch(err => console.log(err));
+              }
+              else
+              {
+                  bcrypt.genSalt(10, (err, salt) => 
+                    bcrypt.hash(req.body.password, salt, (err, hash) => {
+                        if(err) throw err;
+                        user[0].name=name;
+                        user[0].email=email;
+                        user[0].group=group;
+                        user[0].password = hash;
+                        user[0].save()
+                        .then(user => {
+                            req.flash('success_msg', 'Your details are successfully updated');
+                            res.redirect('/users/amyaccount');
+                        })
+                        .catch(err => console.log(err));
+                }))
+              }
+            } 
+            else {
+              if(req.body.studentId.localeCompare(user[0].studentId)!=0)
+                errors.push({ msg: 'Student ID cannot be changed' });
+              else
+                errors.push({ msg: 'Password did not match' });
+              console.log("Not Match");
+              Group.find({})
+                    .exec((err,groups) => {
+                      res.render('amyaccount', {
+                        title: 'Account', 
+                        studentId: user[0].studentId,
+                        errors, 
+                        name, 
+                        email,
+                        groups
+                      });
+                    })
+            }
+          });
+          
+        });
+      //res.redirect('/users/amyaccount');
+  }
+});
+
+
 
 
 router.get('/addquestion', (req,res) => res.render('addques',{
   name: "",
   title: 'Add Question'
 }));
+
+router.get('/usersdelete/:id', function(req, res, next) {
+  const id = req.params.id;
+  const pageNum = req.query.page || 1;
+  User.findByIdAndRemove(id)
+  .then((group) => {
+      const path = '/users/auser?page=' + pageNum; 
+      res.redirect(path);
+  })
+  .catch((err) => {
+      console.log(err);
+      res.redirect('/users/auser');
+  });
+});
 
 
 router.get('/delete/:id', function(req, res, next) {
@@ -200,6 +461,7 @@ router.get('/delete/:id', function(req, res, next) {
   Question.findByIdAndRemove(id)
   .then((group) => {
       const path = '/users/questionbank?page=' + pageNum; 
+      req.flash("success_msg","Question deleted successfully");
       res.redirect(path);
   })
   .catch((err) => {
@@ -211,10 +473,14 @@ router.get('/delete/:id', function(req, res, next) {
 router.get('/questionEdit/:id', function(req, res, next) {
   const id = req.params.id;
   const pageNum = req.query.page || 1;
-  res.render('questionEdit',{
+  Question.findById(id)
+  .then((question) => {
+    res.render('questionEdit',{
       id:id,
+      question:question,
       pageNum:pageNum,
       title: "Edit Question"
+    });
   });
 });
 
@@ -261,7 +527,8 @@ router.post('/signup', (req, res) => {
           errors, 
           name, 
           email,
-          groups
+          groups,
+          title: "Register"
         });
       })
     }

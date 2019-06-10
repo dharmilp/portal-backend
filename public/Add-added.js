@@ -66,3 +66,5 @@ function editQuizRemove(id)
         });
     });
 }
+
+console.log(detect.parse(navigator.userAgent));

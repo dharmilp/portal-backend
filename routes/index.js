@@ -54,7 +54,7 @@ router.get('/qi', (req, res) => {
         console.log(quiz);
         res.render('quizInstruction', {
             name: 'ff',
-            title: 'qi',      // title for page Admin Dashboard
+            title: 'Quiz Instructions',      // title for page Admin Dashboard
             quizinfo: quiz
         });
     })
