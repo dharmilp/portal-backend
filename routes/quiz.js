@@ -41,7 +41,7 @@ router.get('/editQuizQuestion', (req,res) => {
                 res.render('editQuizQuestion', {
                     questions: questions,
                     current: page,
-                    docType: 'questions',
+                    docType: 'quiz/editQuizQuestion',
                     pages: Math.ceil(count / perPage)
                 });
             });
