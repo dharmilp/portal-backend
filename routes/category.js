@@ -1,11 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const Categories = require('../models/Categories');
-const { ensureAuthenticated } = require('../config/auth');
 const { ensureAuthenticatedAdmin } = require('../config/auth');
 
 
-router.get('/',ensureAuthenticated, function(req, res, next) {
+router.get('/',ensureAuthenticatedAdmin, function(req, res, next) {
     var perPage = 9;
     var page = req.query.page || 1;
 
@@ -27,7 +26,7 @@ router.get('/',ensureAuthenticated, function(req, res, next) {
         });
 });
 
-router.post('/',ensureAuthenticated, function(req, res, next) {
+router.post('/',ensureAuthenticatedAdmin, function(req, res, next) {
     const pageNum = req.query.page || 1;
 
     var newCategory = new Categories({
@@ -46,7 +45,7 @@ router.post('/',ensureAuthenticated, function(req, res, next) {
     });
 });
 
-router.get('/delete/:id',ensureAuthenticated, function(req, res, next) {
+router.get('/delete/:id',ensureAuthenticatedAdmin, function(req, res, next) {
     const id = req.params.id;
     const pageNum = req.query.page || 1;
     Categories.findByIdAndRemove(id)
@@ -62,7 +61,7 @@ router.get('/delete/:id',ensureAuthenticated, function(req, res, next) {
     });
 });
 
-router.get('/categoryEdit/:id',ensureAuthenticated, function(req, res, next) {
+router.get('/categoryEdit/:id',ensureAuthenticatedAdmin, function(req, res, next) {
     const id = req.params.id;
     const pageNum = req.query.page || 1;
     res.render('categoryEdit',{
@@ -72,7 +71,7 @@ router.get('/categoryEdit/:id',ensureAuthenticated, function(req, res, next) {
     });
 });
 
-router.post('/categoryUpdate/:id',ensureAuthenticated, function(req, res, next) {
+router.post('/categoryUpdate/:id',ensureAuthenticatedAdmin, function(req, res, next) {
     const id = req.params.id;
     const pageNum = req.query.page || 1;
     Categories.findByIdAndUpdate(id,{ $set: { name: req.body.newCategoryName } },(err,category) => {

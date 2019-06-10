@@ -8,7 +8,7 @@ const { ensureAuthenticatedAdmin } = require('../config/auth');
 const moment = require('moment');
 const mongoose = require('mongoose');
 
-router.get('/addQuizQuestion', (req,res) => {
+router.get('/addQuizQuestion', ensureAuthenticatedAdmin,(req,res) => {
     var perPage = 9;
     var page = req.query.page || 1;
     Questions
@@ -29,7 +29,7 @@ router.get('/addQuizQuestion', (req,res) => {
         });
 });
 
-router.get('/editQuizQuestion', (req,res) => {
+router.get('/editQuizQuestion', ensureAuthenticatedAdmin,(req,res) => {
     var perPage = 9;
     var page = req.query.page || 1;
     Questions
@@ -50,7 +50,7 @@ router.get('/editQuizQuestion', (req,res) => {
         });
 });
 
-router.get('/editQuizQuestion/:id',ensureAuthenticated, function(req, res, next) {
+router.get('/editQuizQuestion/:id',ensureAuthenticatedAdmin, function(req, res, next) {
     const id = req.params.id;
     const pageNum = req.query.page || 1;
     req.session.quizEditQuestionList = req.session.quizEditQuestionList || [];
@@ -74,7 +74,7 @@ router.get('/editQuizQuestion/:id',ensureAuthenticated, function(req, res, next)
     res.redirect('/quiz/editQuizQuestion');
 });
 
-router.get('/addquiz',ensureAuthenticated, function(req, res, next){
+router.get('/addquiz',ensureAuthenticatedAdmin, function(req, res, next){
     Group
         .find({})
         .exec(function(err, groups){
@@ -95,7 +95,7 @@ router.get('/addquiz',ensureAuthenticated, function(req, res, next){
 });
 
 
-router.post('/addquiz',ensureAuthenticated, function(req, res, next ){
+router.post('/addquiz',ensureAuthenticatedAdmin, function(req, res, next ){
     const bt = req.body.buttonType;
     if(bt.localeCompare("Add Questions Manually") == 0)
     {
@@ -155,7 +155,7 @@ router.post('/addquiz',ensureAuthenticated, function(req, res, next ){
     }
 });
 
-router.get('/quizDelete/:id',ensureAuthenticated, function(req, res, next) {
+router.get('/quizDelete/:id',ensureAuthenticatedAdmin, function(req, res, next) {
     const id = req.params.id;
     const pageNum = req.query.page || 1;
     Quiz.findByIdAndRemove(id)
@@ -168,7 +168,7 @@ router.get('/quizDelete/:id',ensureAuthenticated, function(req, res, next) {
     });
   });
   
-router.get('/quizEdit/:id',ensureAuthenticated, function(req, res, next) {
+router.get('/quizEdit/:id',ensureAuthenticatedAdmin, function(req, res, next) {
     const id = req.params.id;
     const pageNum = req.query.page || 1;
     if(typeof req.session.quizEditInfo != 'undefined')
@@ -208,7 +208,7 @@ router.get('/quizEdit/:id',ensureAuthenticated, function(req, res, next) {
     });
 });
   
-router.post('/quizUpdate/:id',ensureAuthenticated, function(req, res, next) {
+router.post('/quizUpdate/:id',ensureAuthenticatedAdmin, function(req, res, next) {
 
     const bt = req.body.buttonType;
     if(bt.localeCompare("Add Questions Manually") == 0)
@@ -258,7 +258,7 @@ router.post('/quizUpdate/:id',ensureAuthenticated, function(req, res, next) {
     });
 });
   
-router.get('/addQuizQuestion/:id',ensureAuthenticated, function(req, res, next) {
+router.get('/addQuizQuestion/:id',ensureAuthenticatedAdmin, function(req, res, next) {
     const id = req.params.id;
     const pageNum = req.query.page || 1;
     req.session.questionIdList = req.session.questionIdList || [];
@@ -282,7 +282,7 @@ router.get('/addQuizQuestion/:id',ensureAuthenticated, function(req, res, next) 
     res.redirect('/quiz/addQuizQuestion');
 });
 
-router.get('/addQuizRemove/:id',ensureAuthenticated, function(req, res, next) {
+router.get('/addQuizRemove/:id',ensureAuthenticatedAdmin, function(req, res, next) {
     const id = req.params.id;
     req.session.questionIdList = req.session.questionIdList || [];
     var index = -1;
@@ -307,7 +307,7 @@ router.get('/addQuizRemove/:id',ensureAuthenticated, function(req, res, next) {
     res.redirect('/quiz/addquiz');
 });
 
-router.get('/editQuizRemove/:id',ensureAuthenticated, function(req, res, next) {
+router.get('/editQuizRemove/:id',ensureAuthenticatedAdmin, function(req, res, next) {
     const id = req.params.id;
     req.session.quizEditQuestionList = req.session.quizEditQuestionList || [];
     var index = -1;
@@ -337,7 +337,7 @@ router.get('/addquestion', (req,res) => res.render('addquestionquiz',{
   }));
 
 
-router.post('/addquestion', (req, res) => {
+router.post('/addquestion', ensureAuthenticatedAdmin,(req, res) => {
       const newQues = new Questions({
       qtype: req.body.quetype,
       category: req.body.selectCategory,
@@ -364,7 +364,7 @@ router.post('/addquestion', (req, res) => {
   }));
 
 
-router.post('/editAddQuestion', (req, res) => {
+router.post('/editAddQuestion', ensureAuthenticatedAdmin, (req, res) => {
       const newQues = new Questions({
       qtype: req.body.quetype,
       category: req.body.selectCategory,
@@ -385,7 +385,7 @@ router.post('/editAddQuestion', (req, res) => {
     .catch(err => console.log(err));
   });
 
-router.get('/attempt/:id',(req,res) => {
+router.get('/attempt/:id',ensureAuthenticated,(req,res) => {
     const id = req.params.id;
     const path = '/quizlive' + id;
     Quiz.findById(id)
