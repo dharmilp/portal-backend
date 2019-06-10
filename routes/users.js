@@ -8,6 +8,7 @@ const nodemailer = require('nodemailer');
 const { ensureAuthenticated } = require('../config/auth');
 const { ensureAuthenticatedAdmin } = require('../config/auth');
 const Group = require('../models/Groups');
+const Result = require('../models/Results');
 
 const User = require('../models/User');
 //const Question = require('../models/Questions');
@@ -59,7 +60,7 @@ router.get('/uquiz', ensureAuthenticated,(req,res) => {
       startDate: 1
     })
   .exec((err,quiz) => {
-    console.log(quiz);
+    //console.log(quiz);
     if(err) throw err;
     const count = quiz.length;
     res.render('uquiz',{
@@ -71,10 +72,30 @@ router.get('/uquiz', ensureAuthenticated,(req,res) => {
     });
   });
 });
-router.get('/uresult', (req,res) => res.render('uresult',{
-  title: 'Result'
-}));
-
+// router.get('/uresult', (req,res) => res.render('uresult',{
+//   title: 'Result'
+// }));
+router.get('/uresult',ensureAuthenticated, (req, res, next) => {
+  var perPage = 9;
+  var page = req.query.page || 1;
+  Result
+          .find({studentId: req.session.userInfo.studentId})
+          .skip((perPage * page) - perPage)
+          .limit(perPage)
+          .exec(function(err, results) {
+          Result.count().exec(function(err, count) {
+          if (err) return next(err)
+          res.render('uresult',{
+          name: "",
+          results: results,
+          current: page,
+          docType: 'users/uresult',
+          pages: Math.ceil(count / perPage),
+          title: 'Result'
+        });
+      });
+  });
+});
 
 // router.get('/umyaccount', (req,res) => res.render('umyaccount',{
 //   title: 'Account'
@@ -282,10 +303,32 @@ router.get('/aquiz', ensureAuthenticatedAdmin,(req,res) => res.render('aquiz',{
   name: "",
   title: 'Quiz'
 }));
-router.get('/aresult', ensureAuthenticatedAdmin,(req,res) => res.render('aresult',{
-  name: "",
-  title: 'Result'
-}));
+// router.get('/aresult', ensureAuthenticatedAdmin,(req,res) => res.render('aresult',{
+//   name: "",
+//   title: 'Result'
+// }));
+
+router.get('/aresult',ensureAuthenticated, (req, res, next) => {
+  var perPage = 9;
+  var page = req.query.page || 1;
+  Result
+          .find({})
+          .skip((perPage * page) - perPage)
+          .limit(perPage)
+          .exec(function(err, results) {
+          Result.count().exec(function(err, count) {
+          if (err) return next(err)
+          res.render('aresult',{
+          name: "",
+          results: results,
+          current: page,
+          docType: 'users/aresult',
+          pages: Math.ceil(count / perPage),
+          title: 'Result'
+        });
+      });
+  });
+});
 
 
 router.get('/amyaccount', ensureAuthenticatedAdmin, (req, res) => {

@@ -20,13 +20,13 @@
                 <div class="ques wrapword">
                   <div style="margin-bottom: 30px"><b>Question <%=i+1%></b></div>
                   <span><%- quiz.addQuestions[i].question %></span>
-                  <input type="radio" name="<%= 'a' + i.toString(10) %>" value="A" class="ops" id="ops" style="margin-right: 10px">
+                  <input type="radio" name="<%= 'a' + i.toString(10) %>" value="1" class="ops" id="ops" style="margin-right: 10px">
                   <span><%- quiz.addQuestions[i].option1 %></span><br>
-                  <input type="radio" name="<%= 'a' + i.toString(10) %>" value="B" class="ops" id="ops" style="margin-right: 10px">
+                  <input type="radio" name="<%= 'a' + i.toString(10) %>" value="2" class="ops" id="ops" style="margin-right: 10px">
                   <span><%- quiz.addQuestions[i].option2 %></span><br>
-                  <input type="radio" name="<%= 'a' + i.toString(10) %>" value="C" class="ops" id="ops" style="margin-right: 10px">
+                  <input type="radio" name="<%= 'a' + i.toString(10) %>" value="3" class="ops" id="ops" style="margin-right: 10px">
                   <span><%- quiz.addQuestions[i].option3 %></span><br>
-                  <input type="radio" name="<%= 'a' + i.toString(10) %>" value="D" class="ops" id="ops" style="margin-right: 10px">
+                  <input type="radio" name="<%= 'a' + i.toString(10) %>" value="4" class="ops" id="ops" style="margin-right: 10px">
                   <span><%- quiz.addQuestions[i].option4 %></span><br>
                 </div>
                 <% } %>

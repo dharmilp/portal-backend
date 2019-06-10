@@ -2,7 +2,7 @@ var Timer;
 var TotalSeconds;
 var durationInMinutesString = document.getElementById("quizTimer").getAttribute('value');
 var durationInMinutesInt = parseInt(durationInMinutesString);
-var durationInSecondsInt = durationInMinutesInt/* * 60*/;
+var durationInSecondsInt = durationInMinutesInt * 60;
 window.onload = CreateTimer("quizTimer", durationInSecondsInt);
 function CreateTimer(TimerID, Time)
 {
@@ -18,7 +18,7 @@ function Tick()
     if (TotalSeconds <= 0)
     {
         alert("Time's up!");
-//        submitQuiz();
+        submitQuiz();
         return;
     }
 
