@@ -10,8 +10,9 @@ router.get('/quiz/:id',ensureAuthenticated,(req,res) => {
     Quiz.findById(id)
     .exec((err,quiz) => {
         if(err) throw err;
-        res.render('quizLayout1',{
+        res.render('quizLayout',{
             quiz:quiz,
+            title:"Quiz"
         });
     });
 });

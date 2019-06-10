@@ -32,18 +32,18 @@
     line-height: 40px;
   }
   .page-numbers:hover, .page-numbers.current {
-    background-color: #017ac7;
+    background-color: rgb(52, 181, 184);
     color: #fff;
     text-decoration: none;
   }
 
   .page-numbers.active{
-    background-color: #017ac7;
+    background-color: rgb(52, 181, 184);
   }
 
   .page-numbers.prev:hover, .page-numbers.next:hover {
     background-color: transparent;
-    color: #017ac7;
+    color: rgb(52, 181, 184);
     text-decoration: none;
   }
 

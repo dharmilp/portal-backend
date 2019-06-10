@@ -71,6 +71,9 @@
                         Quiz Name
                       </th>
                       <th>
+                        Start Date
+                      </th>
+                      <th>
                         Start Time
                       </th>
                       <th>
@@ -88,7 +91,10 @@
                                 <%=quizzes[i].name%>
                             </td>
                             <td>
-                              <%=quizzes[i].startDate%>
+                              <%=quizzes[i].startDate.toDateString()%>
+                            </td>
+                            <td>
+                              <%=quizzes[i].startDate.toTimeString().substr(0,8)%>
                             </td>
                             <td>
                               <%=quizzes[i].duration%>

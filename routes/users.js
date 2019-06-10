@@ -48,7 +48,7 @@ router.get('/signup', (req, res) => {
 router.get('/forgot', (req,res) => res.render('forgot',{
     title: 'Reset Password'
 }));
-router.get('/uquiz', (req,res) => {
+router.get('/uquiz', ensureAuthenticated,(req,res) => {
   const perPage = 9;
   const pageNum = req.query.page || 1;
   Quiz.find({"assignToGroups" : req.session.userInfo.group})
@@ -80,7 +80,7 @@ router.get('/uresult', (req,res) => res.render('uresult',{
 //   title: 'Account'
 // }));
 
-router.get('/umyaccount', (req, res) => {
+router.get('/umyaccount', ensureAuthenticated,(req, res) => {
   Group.find({})
   .exec((err,groups) => {
     if(err)
@@ -103,7 +103,7 @@ router.get('/umyaccount', (req, res) => {
   });
 });
 
-router.post('/umyaccount', (req, res) => {
+router.post('/umyaccount', ensureAuthenticated,(req, res) => {
   const { name, studentId, email, opassword, password, password2, group } = req.body;
   let errors = [];
   //console.log(req.body);
@@ -204,7 +204,7 @@ router.post('/umyaccount', (req, res) => {
 
 
 
-router.get('/auser', (req,res,next) => { 
+router.get('/auser', ensureAuthenticatedAdmin,(req,res,next) => { 
 
   var perPage = 9;
   var page = req.query.page || 1;
@@ -229,7 +229,7 @@ router.get('/auser', (req,res,next) => {
 
 
 
-router.get('/questionbank', (req, res, next) => {
+router.get('/questionbank',ensureAuthenticatedAdmin, (req, res, next) => {
     var perPage = 9;
     var page = req.query.page || 1;
     Question
@@ -251,28 +251,7 @@ router.get('/questionbank', (req, res, next) => {
     });
 });
 
-// router.get('/addQuizQuestion', (req, res, next) => {
-//   var perPage = 9;
-//   var page = req.query.page || 1;
-//   Question
-//           .find({})
-//           .skip((perPage * page) - perPage)
-//           .limit(perPage)
-//           .exec(function(err, questions) {
-//           Question.count().exec(function(err, count) {
-//           if (err) return next(err)
-//           res.render('addQuizQuestion',{
-//           name: "",
-//           questions: questions,
-//           current: page,
-//           docType: 'questions',
-//           pages: Math.ceil(count / perPage)
-//         });
-//       });
-//   });
-// });
-
-router.get('/aquiz', (req, res, next) => {
+router.get('/aquiz', ensureAuthenticatedAdmin,(req, res, next) => {
   var perPage = 9;
   var page = req.query.page || 1;
   Quiz
@@ -295,21 +274,21 @@ router.get('/aquiz', (req, res, next) => {
 });
 
 
-router.get('/settings', (req,res) => res.render('settings',{
+router.get('/settings', ensureAuthenticatedAdmin,(req,res) => res.render('settings',{
   name: "",
   title: 'Settings'
 }));
-router.get('/aquiz', (req,res) => res.render('aquiz',{
+router.get('/aquiz', ensureAuthenticatedAdmin,(req,res) => res.render('aquiz',{
   name: "",
   title: 'Quiz'
 }));
-router.get('/aresult', (req,res) => res.render('aresult',{
+router.get('/aresult', ensureAuthenticatedAdmin,(req,res) => res.render('aresult',{
   name: "",
   title: 'Result'
 }));
 
 
-router.get('/amyaccount', (req, res) => {
+router.get('/amyaccount', ensureAuthenticatedAdmin, (req, res) => {
   Group.find({})
   .exec((err,groups) => {
     if(err)
@@ -336,7 +315,7 @@ router.get('/amyaccount', (req, res) => {
 });
 
 
-router.post('/amyaccount', (req, res) => {
+router.post('/amyaccount', ensureAuthenticatedAdmin,(req, res) => {
   const { name, studentId, email, opassword, password, password2, group } = req.body;
   let errors = [];
   console.log(req.body);
@@ -435,12 +414,12 @@ router.post('/amyaccount', (req, res) => {
 
 
 
-router.get('/addquestion', (req,res) => res.render('addques',{
+router.get('/addquestion', ensureAuthenticatedAdmin, (req,res) => res.render('addques',{
   name: "",
   title: 'Add Question'
 }));
 
-router.get('/usersdelete/:id', function(req, res, next) {
+router.get('/usersdelete/:id', ensureAuthenticatedAdmin,function(req, res, next) {
   const id = req.params.id;
   const pageNum = req.query.page || 1;
   User.findByIdAndRemove(id)
@@ -455,7 +434,7 @@ router.get('/usersdelete/:id', function(req, res, next) {
 });
 
 
-router.get('/delete/:id', function(req, res, next) {
+router.get('/delete/:id', ensureAuthenticatedAdmin,function(req, res, next) {
   const id = req.params.id;
   const pageNum = req.query.page || 1;
   Question.findByIdAndRemove(id)
@@ -470,7 +449,7 @@ router.get('/delete/:id', function(req, res, next) {
   });
 });
 
-router.get('/questionEdit/:id', function(req, res, next) {
+router.get('/questionEdit/:id', ensureAuthenticatedAdmin, function(req, res, next) {
   const id = req.params.id;
   const pageNum = req.query.page || 1;
   Question.findById(id)
@@ -484,7 +463,7 @@ router.get('/questionEdit/:id', function(req, res, next) {
   });
 });
 
-router.post('/questionUpdate/:id', function(req, res, next) {
+router.post('/questionUpdate/:id', ensureAuthenticatedAdmin, function(req, res, next) {
   const id = req.params.id;
   const pageNum = req.query.page || 1;
   Question.findByIdAndUpdate(id,{ $set: { qtype: req.body.quetype, 
@@ -683,7 +662,7 @@ router.post('/reset/:token', function(req, res) {
 });
 
 
-router.post('/addquestion', (req, res) => {
+router.post('/addquestion', ensureAuthenticatedAdmin,(req, res) => {
   console.log(req.body);
     const newQues = new Question({
     qtype: req.body.quetype,
