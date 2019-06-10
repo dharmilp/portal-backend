@@ -1,0 +1,71 @@
+.ops{
+    float: left;
+}
+
+.divs{
+    width: auto;
+    height: 500px;
+    word-break: break;
+    overflow-y: auto;
+    border: 1px solid rgb(175, 170, 170);
+    padding: 20px;
+}
+
+.wrapword {
+    white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    white-space: pre-wrap;       /* css-3 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+    white-space: -webkit-pre-wrap; /* Newer versions of Chrome/Safari*/
+    word-break: break-all;
+    white-space: normal;
+}
+
+
+
+
+
+    /* Set height of the grid so .sidenav can be 100% (adjust if needed)*/
+/*    .row.content {height: 1500px}*/
+    
+    /* Set gray background color and 100% height */
+    .sidenav {
+      background-color: #f1f1f1;
+/*      height: 100%;*/
+    }
+    
+    /* On small screens, set height to 'auto' for sidenav and grid */
+    @media screen and (max-width: 767px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+      .row.content {height: auto;} 
+    }
+
+    .mysidenav {
+      height: 100%;
+      
+/*      width: 200px;*/
+/*      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      background-color: #111;
+      overflow-x: hidden;
+      padding-top: 20px;*/
+    }
+    
+    .mysidenav .mybt {
+      padding: 6px 6px 6px 32px;
+      text-decoration: none;
+      font-size: 25px;
+      color: #818181;
+      display: block;
+    }
+    
+    .mysidenav .mybt:hover {
+      color: #f1f1f1;
+    }
+    

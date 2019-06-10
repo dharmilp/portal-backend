@@ -1,0 +1,98 @@
+
+<div class="container-fluid" style="display: table">
+    <!-- <div class="row content"> -->
+        <div style="height:100%">
+        <div class="col-sm-3 sidenav .mysidenav">
+            <div>ggfgfgf</div>
+            <div>ggfgfgf</div>
+            <div>ggfgfgf</div>
+            <div>ggfgfgf</div>
+            <div>ggfgfgf</div>
+            <div>ggfgfgf</div>
+            <div>ggfgfgf</div>
+            <div>ggfgfgf</div>
+            <div>ggfgfgf</div>
+            <div>ggfgfgf</div>
+            <div>ggfgfgf</div>
+            <div>ggfgfgf</div>
+            <!-- <div>ggfgfgf</div>
+            <div>ggfgfgf</div>
+            <div>ggfgfgf</div>
+            <div>ggfgfgf</div>
+            <div>ggfgfgf</div>
+            <div>ggfgfgf</div>
+            <div>ggfgfgf</div>
+            <div>ggfgfgf</div>
+            <div>ggfgfgf</div>
+            <div>ggfgfgf</div>
+            <div>ggfgfgf</div>
+            <div>ggfgfgf</div>
+            <div>ggfgfgf</div>
+            <div>ggfgfgf</div>
+            <div>ggfgfgf</div>
+            <div>ggfgfgf</div>
+            <div>ggfgfgf</div>
+            <div>ggfgfgf</div>
+            <div>ggfgfgf</div>
+            <div>ggfgfgf</div>
+            <div>ggfgfgf</div> -->
+          <h4><%= quiz.name %></h4>
+        </div>
+      </div>
+
+      <div class="col-sm-9">
+        <div id="quizTimer" value="<%=quiz.duration%>" style="text-align: right; padding-top: 10px; padding-right: 10px"></div>
+        <hr>
+        <div>
+          <form id="quizForm" action="/attempt/quiz/<%=quiz._id%>" method="POST">
+            <div class="divs">
+                <% for(var i=0;i < quiz.addQuestions.length;i++) { %>
+                <div class="ques wrapword">
+                  <div style="margin-bottom: 30px"><b>Question <%=i+1%></b></div>
+                  <span><%- quiz.addQuestions[i].question %></span>
+                  <input type="radio" name="<%= 'a' + i.toString(10) %>" value="A" class="ops" id="ops">
+                  <span><%- quiz.addQuestions[i].option1 %></span>
+                  <input type="radio" name="<%= 'a' + i.toString(10) %>" value="B" class="ops" id="ops">
+                  <span><%- quiz.addQuestions[i].option2 %></span>
+                  <input type="radio" name="<%= 'a' + i.toString(10) %>" value="C" class="ops" id="ops">
+                  <span><%- quiz.addQuestions[i].option3 %></span>
+                  <input type="radio" name="<%= 'a' + i.toString(10) %>" value="D" class="ops" id="ops">
+                  <span><%- quiz.addQuestions[i].option4 %></span>
+                </div>
+                <% } %>
+              </div>
+          </form>
+            <div id="next" class="btn btn-success btn-round">next</div>
+            <div id="prev" class="btn btn-success btn-round">prev</div>
+            <div id="clearResponse" class="btn btn-secondary btn-round">Clear Response</div>
+            <button id="submitquiz" form="quizForm" class="btn btn-primary btn-round pull-right">submit quiz</button>
+        </div>
+        
+        <hr>
+        
+  
+      </div>
+    <!-- </div> -->
+  </div>
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../../quizLayout.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  
+  
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+  <!-- CSS Files -->
+  <link href="../../assets/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="../../assets/css/paper-dashboard.css" rel="stylesheet" />
+  <link href="../../quizLayout.css" rel="stylesheet" />
+  
+  <!--   Core JS Files   -->
+  <script src="../../assets/js/core/jquery.min.js"></script>
+  <script src="../../assets/js/core/popper.min.js"></script>
+  <script src="../../assets/js/core/bootstrap.min.js"></script>
+  <script src="../../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+  <script src="../../dynamicScript.js"></script>
+  <script src="../../timerScript.js"></script>
