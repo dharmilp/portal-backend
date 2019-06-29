@@ -11,7 +11,7 @@
       </div>
 
       <div class="col-sm-9 main">
-        <div id="quizTimer" value="<%=quiz.duration%>" style="text-align: right; padding-top: 10px; padding-right: 10px"></div>
+        <div id="quizTimer" value="<%=remainingTime%>" style="text-align: right; padding-top: 10px; padding-right: 10px"></div>
         <hr>
         <div>
           <form id="quizForm" action="/attempt/quiz/<%=quiz._id%>" method="POST">
