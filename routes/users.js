@@ -481,10 +481,19 @@ router.get('/delete/:id', ensureAuthenticatedAdmin,function(req, res, next) {
   const id = req.params.id;
   const pageNum = req.query.page || 1;
   Question.findByIdAndRemove(id)
-  .then((group) => {
-      const path = '/users/questionbank?page=' + pageNum; 
-      req.flash("success_msg","Question deleted successfully");
-      res.redirect(path);
+  .then(() => {
+    // removing question from all quiz
+      Quiz.update({}, {
+        $pull: {
+            "addQuestions": {id:id}
+        }
+      }).exec(function(err, user){
+        if(err) throw err;
+        console.log("foo_bar is removed from the list of your followers");
+        const path = '/users/questionbank?page=' + pageNum; 
+        req.flash("success_msg","Question deleted successfully");
+        res.redirect(path);
+      });
   })
   .catch((err) => {
       console.log(err);

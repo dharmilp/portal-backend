@@ -11,15 +11,29 @@ router.get('/quiz/:id',ensureAuthenticated,(req,res) => {
     Quiz.findById(id)
     .exec((err,quiz) => {
         if(err) throw err;
+        const currTime = Date.now();
+        const startTimeID = 'StartTime' + id;
+        req.session.startTimeID = req.session.startTimeID || currTime;
+        //total seconds passed till started
+        var remainingTime = 0;
+        const timePassedTillStart = Math.floor((currTime - req.session.startTimeID)/1000);
+        if(timePassedTillStart < (quiz.duration * 60))
+            remainingTime = (quiz.duration * 60) - timePassedTillStart;
+        console.log(remainingTime);
         res.render('quizLayout',{
             quiz:quiz,
-            title:"Quiz"
+            title:"Quiz",
+            remainingTime:remainingTime
         });
     });
 });
 
 router.post('/quiz/:id',ensureAuthenticated,(req,res) => {
     const id = req.params.id;
+    const startTimeID = 'StartTime' + id;
+    console.log(req.session.startTimeID);
+    // destroying value
+    req.session.startTimeID = null;
 
     // id will be usefull for finding quiz
     console.log(req.body);

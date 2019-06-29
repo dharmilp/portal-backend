@@ -1,8 +1,9 @@
 var Timer;
 var TotalSeconds;
-var durationInMinutesString = document.getElementById("quizTimer").getAttribute('value');
-var durationInMinutesInt = parseInt(durationInMinutesString);
-var durationInSecondsInt = durationInMinutesInt * 60;
+//var durationInMinutesString = document.getElementById("quizTimer").getAttribute('value');
+//var durationInMinutesInt = parseInt(durationInMinutesString);
+//var durationInSecondsInt = durationInMinutesInt * 60;
+var durationInSecondsInt = document.getElementById("quizTimer").getAttribute('value');
 window.onload = CreateTimer("quizTimer", durationInSecondsInt);
 function CreateTimer(TimerID, Time)
 {
