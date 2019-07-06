@@ -51,7 +51,7 @@
           
           <a class="navbar-brand" href="#">Dashboard</a>
         </div>
-        <div class="collapse navbar-collapse justify-content-end" id="navigation">
+        <div class="collapse navbar-collapse justify-content-end" id="navigation" baseurl="<%=process.env.BASE_URL%>">
         </div>
       </div>
     </nav>
@@ -92,8 +92,7 @@
   cache: "default"
 };
 
-const url = "http://localhost:5000/temp-data";
-
+const url = document.getElementById("navigation").getAttribute("baseurl") + "/temp-data";
 fetch(url, fetchParams)
   .then(res => {
     if (!res.ok) {
