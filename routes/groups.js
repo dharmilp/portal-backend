@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Group = require('../models/Groups');
-const { ensureAuthenticated } = require('../config/auth');
+const Quiz = require('../models/Quiz');
 const { ensureAuthenticatedAdmin } = require('../config/auth');
-
 
 router.get('/',ensureAuthenticatedAdmin, function(req, res, next) {
     var perPage = 9;
@@ -14,7 +13,7 @@ router.get('/',ensureAuthenticatedAdmin, function(req, res, next) {
         .skip((perPage * page) - perPage)
         .limit(perPage)
         .exec(function(err, groups) {
-            Group.count().exec(function(err, count) {
+            Group.countDocuments().exec(function(err, count) {
                 if (err) return next(err)
                 res.render('groupList', {
                     groups: groups,
@@ -51,13 +50,18 @@ router.get('/delete/:id',ensureAuthenticatedAdmin, function(req, res, next) {
     const pageNum = req.query.page || 1;
     Group.findByIdAndRemove(id)
     .then((group) => {
-        req.flash('success_msg','Group deleted successfully!');
-        const path = '/groups?page=' + pageNum; 
-        res.redirect(path);
+        Quiz.updateMany(
+            {},
+            {$pull: {"assignToGroups": group.name}},
+        (err,user) => {
+            if(err) throw err;
+            req.flash('success_msg','Group deleted successfully!');
+            const path = '/groups?page=' + pageNum; 
+            res.redirect(path);
+        })
     })
     .catch((err) => {
         req.flash('error_msg','Something went wrong');
-        console.log(err);
         res.redirect('/groups');
     });
 });
@@ -74,10 +78,8 @@ router.get('/groupEdit/:id',ensureAuthenticatedAdmin, function(req, res, next) {
 
 router.post('/groupUpdate/:id',ensureAuthenticatedAdmin, function(req, res, next) {
     const id = req.params.id;
-    console.log(id);
     const pageNum = req.query.page || 1;
     Group.findByIdAndUpdate(id,{ $set: { name: req.body.newGroupName } },(err,group) => {
-        console.log(group);
         if(err) {
             req.flash('error_msg','Something went wrong');
             console.log(err);

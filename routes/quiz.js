@@ -16,7 +16,7 @@ router.get('/addQuizQuestion', ensureAuthenticatedAdmin,(req,res) => {
         .skip((perPage * page) - perPage)
         .limit(perPage)
         .exec(function(err, questions) {
-            Questions.count().exec(function(err, count) {
+            Questions.countDocuments().exec(function(err, count) {
                 if (err) return next(err);
                 res.render('addQuizQuestion', {
                     questions: questions,
@@ -37,7 +37,7 @@ router.get('/editQuizQuestion', ensureAuthenticatedAdmin,(req,res) => {
         .skip((perPage * page) - perPage)
         .limit(perPage)
         .exec(function(err, questions) {
-            Questions.count().exec(function(err, count) {
+            Questions.countDocuments().exec(function(err, count) {
                 if (err) return next(err);
                 res.render('editQuizQuestion', {
                     questions: questions,
@@ -118,11 +118,8 @@ router.post('/addquiz',ensureAuthenticatedAdmin, function(req, res, next ){
         errors.push({ msg: 'Please fill all the fields' });
     if(errors.length > 0)
     {
-        Group
-            .find({})
-            .exec(function(err, groups){
-                res.redirect('/quiz/addquiz');
-            });
+        req.flash('error_msg',errors[0].msg);
+        res.redirect('/quiz/addquiz');1
     }
     else
     {
@@ -160,10 +157,12 @@ router.get('/quizDelete/:id',ensureAuthenticatedAdmin, function(req, res, next) 
     const pageNum = req.query.page || 1;
     Quiz.findByIdAndRemove(id)
     .then((quiz) => {
-        const path = '/users/aquiz?page=' + pageNum; 
+        const path = '/users/aquiz?page=' + pageNum;
+        req.flash('success_msg','Quiz deleted successfully!');
         res.redirect(path);
     })
     .catch((err) => {
+        req.flash('error_msg','Something went wrong!');
         res.redirect('/users/aquiz');
     });
   });
@@ -245,7 +244,7 @@ router.post('/quizUpdate/:id',ensureAuthenticatedAdmin, function(req, res, next)
         assignToGroups: req.body.assignToGroups,
         addQuestions: questions } },(err,quiz) => {
             if(err) {
-                req.flash('err_msg',"Something went wrong");
+                req.flash('error_msg',"Something went wrong");
                 res.redirect('/users/aquiz');
             } else {
                 req.session.quizEditQuestionList = undefined;

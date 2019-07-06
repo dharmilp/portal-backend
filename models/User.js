@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
-//import mongoose, { Schema } from 'mongoose';
 
-//const UserSchema = new mongoose.Schema({
 const UserSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -34,5 +32,4 @@ const UserSchema = new mongoose.Schema({
 const myDb = mongoose.connection.useDb('SPCPortal');
 const User = myDb.model('User', UserSchema);
 
-//export default User;
 module.exports = User;

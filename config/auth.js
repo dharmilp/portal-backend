@@ -7,7 +7,7 @@ module.exports = {
       res.redirect('/users/login');
     },
     ensureAuthenticatedAdmin: function(req, res, next) {
-      if (req.isAuthenticated() && req.user.name.localeCompare('Admin') == 0) {
+      if (req.isAuthenticated() && req.user.studentId.localeCompare('Admin') == 0) {
         return next();
       }
       req.flash('error_msg', 'Please log in to view that resource');
