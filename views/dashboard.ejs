@@ -75,7 +75,6 @@
 <!-- CSS Files -->
 <link href="../assets/css/bootstrap.min.css" rel="stylesheet" />
 <link href="../assets/css/paper-dashboard.css" rel="stylesheet" />
-<link href="../public/bargraph.css" rel="stylesheet" />
 
 <!--   Core JS Files   -->
 <script src="../assets/js/core/jquery.min.js"></script>
@@ -83,7 +82,7 @@
 <script src="../assets/js/core/bootstrap.min.js"></script>
 <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
 <script src="https://cdn.anychart.com/releases/8.0.0/js/anychart-base.min.js"></script>
-<script src="../bargraph.js"></script>
+
 <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
 <script>
   const fetchParams = {
@@ -93,7 +92,7 @@
 };
 
 //const url = document.getElementById("navigation").getAttribute("baseurl") + "/temp-data";
-const url = "https://spctestportal.herokuapp.com/temp-data";
+const url = "http://192.168.43.187:5000/temp-data";
 fetch(url, fetchParams)
   .then(res => {
     if (!res.ok) {
