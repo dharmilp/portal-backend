@@ -94,14 +94,14 @@
                                   <div class="form-group">
                                     <label for="startDate">Quiz Start Date</label>
                                     <input
-                                      type="datetime"
+                                      type="text"
                                       id="startDate"
                                       name="startDate"
                                       class="form-control"
                                       placeholder="YYYY/MM/DD HH:MM:SS"
                                       value="<%= 
-                                      (typeof session.quizEditInfo != 'undefined' && typeof session.quizEditInfo.startDate != 'undefined')
-                                      ?moment(session.quizEditInfo.startDate.toString()).format('YYYY/MM/DD h:mm:ss')
+                                      (typeof session.quizEditInfo != 'undefined' && typeof session.quizEditInfo.startDate != 'undefined' && moment(session.quizEditInfo.startDate, 'YYYY/MM/DD HH:mm:ss').isValid())
+                                      ?moment(session.quizEditInfo.startDate.toString()).format('YYYY/MM/DD HH:mm:ss')
                                       :'' %>"
                                     />
                                   <div>

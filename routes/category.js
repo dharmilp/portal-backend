@@ -13,7 +13,7 @@ router.get('/',ensureAuthenticatedAdmin, function(req, res, next) {
         .skip((perPage * page) - perPage)
         .limit(perPage)
         .exec(function(err, categories) {
-            Categories.count().exec(function(err, count) {
+            Categories.countDocuments().exec(function(err, count) {
                 if (err) return next(err)
                 res.render('categoryList', {
                     categories: categories,

@@ -1,7 +1,6 @@
 $(document).ready(function(){
 
 		$(".divs .ques").each(function(e) {
-			console.log(e);
 		    if (e != 0)
 				$(this).hide();
 		});
@@ -13,7 +12,6 @@ $(document).ready(function(){
 				activeEle[0].classList.remove("active");
 				var questionIndex = $(".divs .ques:visible").index();
 				var sCArray = document.getElementsByClassName("shortCut");
-				console.log(sCArray.length);
 				sCArray[questionIndex + 1].classList.add("active");
 
 
@@ -32,7 +30,6 @@ $(document).ready(function(){
 				activeEle[0].classList.remove("active");
 				var questionIndex = $(".divs .ques:visible").index();
 				var sCArray = document.getElementsByClassName("shortCut");
-				console.log(sCArray.length);
 				sCArray[questionIndex - 1].classList.add("active");
 
 				$(".divs .ques:visible").prev().show().next().hide();
@@ -49,30 +46,23 @@ $(document).ready(function(){
 			var ele = document.getElementsByName(questionName);
 			for(var i=0;i<ele.length;i++)
 			{
-				console.log(ele[i].checked);
 				ele[i].checked = false;
-				console.log(ele[i].checked);
 			}
 			return false;
 		});
 
 		$(".shortCut").click(function(e){
-			//console.log(e);
 			var questionNumber = $(this).attr("number");
 			var qNo = parseInt(questionNumber);
-			//console.log(typeof qNo);
 			$(".divs .ques:visible").hide();
 			var ele = document.querySelectorAll(".divs .ques");
 			var activeEle = document.getElementsByClassName("active");
 			activeEle[0].classList.remove("active");
-			//console.log(ele);
 			ele[qNo].style.display = "block";
 			$(this).addClass("active");
-			//console.log(questionNumber);
 		});
 
 		$(".shortCut").each(function(e) {
-			console.log(e);
 		    if (e == 0)
 				$(this).addClass("active");
 		});

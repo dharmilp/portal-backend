@@ -1,0 +1,8 @@
+# dependecies
+node_modules
+
+# dotenv environment variables file
+.env
+
+# VSCode custom settings
+.vscode

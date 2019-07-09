@@ -12,13 +12,14 @@ require('dotenv').config()
 
 require('./config/passport')(passport);
 
-//const db = require('./config/keys').MongoURI;
-const db = "mongodb://localhost/default";
+const db = require('./config/keys').MongoURI;
+//const db = "mongodb://localhost/default";
 mongoose.connect(db, {useNewUrlParser: true})
 .then(() => console.log('MongoDb connected'))
 .catch(err => console.log(err));
 
 mongoose.set('useCreateIndex', true);
+mongoose.set('useFindAndModify', false);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}));

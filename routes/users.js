@@ -11,11 +11,12 @@ const Group = require('../models/Groups');
 const Result = require('../models/Results');
 
 const User = require('../models/User');
-//const Question = require('../models/Questions');
 const mailSetup = require('../config/mailSetup');
 
 const Question = require('../models/Questions');
 const Quiz = require('../models/Quiz');
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 
 router.get('/login', (req, res) => {
   if(typeof req.session.userInfo == 'undefined')
@@ -60,7 +61,6 @@ router.get('/uquiz', ensureAuthenticated,(req,res) => {
       startDate: 1
     })
   .exec((err,quiz) => {
-    //console.log(quiz);
     if(err) throw err;
     const count = quiz.length;
     res.render('uquiz',{
@@ -72,9 +72,7 @@ router.get('/uquiz', ensureAuthenticated,(req,res) => {
     });
   });
 });
-// router.get('/uresult', (req,res) => res.render('uresult',{
-//   title: 'Result'
-// }));
+
 router.get('/uresult',ensureAuthenticated, (req, res, next) => {
   var perPage = 9;
   var page = req.query.page || 1;
@@ -83,7 +81,7 @@ router.get('/uresult',ensureAuthenticated, (req, res, next) => {
           .skip((perPage * page) - perPage)
           .limit(perPage)
           .exec(function(err, results) {
-          Result.count().exec(function(err, count) {
+          Result.countDocuments().exec(function(err, count) {
           if (err) return next(err)
           res.render('uresult',{
           name: "",
@@ -96,10 +94,6 @@ router.get('/uresult',ensureAuthenticated, (req, res, next) => {
       });
   });
 });
-
-// router.get('/umyaccount', (req,res) => res.render('umyaccount',{
-//   title: 'Account'
-// }));
 
 router.get('/umyaccount', ensureAuthenticated,(req, res) => {
   Group.find({})
@@ -127,7 +121,6 @@ router.get('/umyaccount', ensureAuthenticated,(req, res) => {
 router.post('/umyaccount', ensureAuthenticated,(req, res) => {
   const { name, studentId, email, opassword, password, password2, group } = req.body;
   let errors = [];
-  //console.log(req.body);
   if(!name || !studentId || !email || !req.body.oldpassword)
       errors.push({ msg: 'Please fill all the fields' });
 
@@ -137,8 +130,6 @@ router.post('/umyaccount', ensureAuthenticated,(req, res) => {
   if(password && password.length < 6)
       errors.push({ msg: 'Password should be atleast 6 characters' });
   
-  
-  //res.redirect('/users/amyaccount');
   ur=req.session.userInfo;
   if(errors.length > 0)
   {
@@ -156,27 +147,39 @@ router.post('/umyaccount', ensureAuthenticated,(req, res) => {
   }
   else
   {
+    User.find({$or:[
+      { studentId: studentId },
+      { email: email }
+    ]}, (err,userExisting) => {
+      // if there is existing user with same studentId or email
+      if(err)
+      {
+        console.log(err);
+        return;
+      }
+      if(userExisting.length > 1 || (userExisting.length == 1 && userExisting[0]._id != req.session.userInfo._id))
+      {
+        req.flash('error_msg','studentId or email is already registered !!!');
+        res.redirect('/users/umyaccount');
+        return;
+      }
     usr=req.session.userInfo;
     User.find({studentId: usr.studentId}, function(err, user)  {
       var x,y;
       x=req.body.oldpassword;
-      //console.log(user[0]);
-      //console.log(x);
       bcrypt.compare(req.body.oldpassword, user[0].password, (err, isMatch) => {
-        //if (err) throw err;
         if (isMatch && req.body.studentId.localeCompare(user[0].studentId)==0) {
-          console.log("Match");
           if(!req.body.password)
           {
             user[0].name=name;
             user[0].email=email;
             user[0].group=group;
             user[0].save()
-                    .then(user => {
-                        req.flash('success_msg', 'Your details are successfully updated');
-                        res.redirect('/users/umyaccount');
-                    })
-                    .catch(err => console.log(err));
+            .then(user => {
+                req.flash('success_msg', 'Your details are successfully updated');
+                res.redirect('/users/umyaccount');
+            })
+            .catch(err => console.log(err));
           }
           else
           {
@@ -201,23 +204,21 @@ router.post('/umyaccount', ensureAuthenticated,(req, res) => {
             errors.push({ msg: 'Student ID cannot be changed' });
           else
             errors.push({ msg: 'Password did not match' });
-          console.log("Not Match");
           Group.find({})
-                .exec((err,groups) => {
-                  res.render('umyaccount', {
-                    title: 'Account', 
-                    studentId: user[0].studentId,
-                    errors, 
-                    name, 
-                    email,
-                    groups
-                  });
-                })
-        }
+          .exec((err,groups) => {
+            res.render('umyaccount', {
+              title: 'Account', 
+              studentId: user[0].studentId,
+              errors, 
+              name, 
+              email,
+              groups
+            });
+          })
+          }
       });
-      
     });
-      //res.redirect('/users/amyaccount');
+  })
   }
 });
 
@@ -234,7 +235,7 @@ router.get('/auser', ensureAuthenticatedAdmin,(req,res,next) => {
           .skip((perPage * page) - perPage)
           .limit(perPage)
           .exec(function(err, users) {
-          User.count().exec(function(err, count) {
+          User.countDocuments().exec(function(err, count) {
           if (err) return next(err)
           res.render('auser',{
           name: "",
@@ -258,7 +259,7 @@ router.get('/questionbank',ensureAuthenticatedAdmin, (req, res, next) => {
             .skip((perPage * page) - perPage)
             .limit(perPage)
             .exec(function(err, questions) {
-            Question.count().exec(function(err, count) {
+            Question.countDocuments().exec(function(err, count) {
             if (err) return next(err)
             res.render('questionbank',{
             name: "",
@@ -280,7 +281,7 @@ router.get('/aquiz', ensureAuthenticatedAdmin,(req, res, next) => {
           .skip((perPage * page) - perPage)
           .limit(perPage)
           .exec(function(err, quiz) {
-          Quiz.count().exec(function(err, count) {
+          Quiz.countDocuments().exec(function(err, count) {
           if (err) return next(err)
           res.render('aquiz',{
           name: "",
@@ -303,10 +304,6 @@ router.get('/aquiz', ensureAuthenticatedAdmin,(req,res) => res.render('aquiz',{
   name: "",
   title: 'Quiz'
 }));
-// router.get('/aresult', ensureAuthenticatedAdmin,(req,res) => res.render('aresult',{
-//   name: "",
-//   title: 'Result'
-// }));
 
 router.get('/aresult',ensureAuthenticated, (req, res, next) => {
   var perPage = 9;
@@ -316,7 +313,7 @@ router.get('/aresult',ensureAuthenticated, (req, res, next) => {
           .skip((perPage * page) - perPage)
           .limit(perPage)
           .exec(function(err, results) {
-          Result.count().exec(function(err, count) {
+          Result.countDocuments().exec(function(err, count) {
           if (err) return next(err)
           res.render('aresult',{
           name: "",
@@ -371,9 +368,6 @@ router.post('/amyaccount', ensureAuthenticatedAdmin,(req, res) => {
   if(password && password.length < 6)
       errors.push({ msg: 'Password should be atleast 6 characters' });
   
-  
-  //res.redirect('/users/amyaccount');
-  
   if(errors.length > 0)
   {
     Group.find({})
@@ -393,12 +387,8 @@ router.post('/amyaccount', ensureAuthenticatedAdmin,(req, res) => {
     User.find({studentId: "Admin"}, function(err, user)  {
           var x,y;
           x=req.body.oldpassword;
-          //console.log(user[0]);
-          //console.log(x);
           bcrypt.compare(req.body.oldpassword, user[0].password, (err, isMatch) => {
-            //if (err) throw err;
             if (isMatch && req.body.studentId.localeCompare(user[0].studentId)==0) {
-              console.log("Match");
               if(!req.body.password)
               {
                 user[0].name=name;
@@ -434,7 +424,6 @@ router.post('/amyaccount', ensureAuthenticatedAdmin,(req, res) => {
                 errors.push({ msg: 'Student ID cannot be changed' });
               else
                 errors.push({ msg: 'Password did not match' });
-              console.log("Not Match");
               Group.find({})
                     .exec((err,groups) => {
                       res.render('amyaccount', {
@@ -450,7 +439,6 @@ router.post('/amyaccount', ensureAuthenticatedAdmin,(req, res) => {
           });
           
         });
-      //res.redirect('/users/amyaccount');
   }
 });
 
@@ -483,13 +471,11 @@ router.get('/delete/:id', ensureAuthenticatedAdmin,function(req, res, next) {
   Question.findByIdAndRemove(id)
   .then(() => {
     // removing question from all quiz
-      Quiz.update({}, {
-        $pull: {
-            "addQuestions": {id:id}
-        }
-      }).exec(function(err, user){
+      Quiz.updateMany(
+        {},
+        {$pull: {"addQuestions": {"_id":new ObjectId(id)}}},
+        function(err, user){
         if(err) throw err;
-        console.log("foo_bar is removed from the list of your followers");
         const path = '/users/questionbank?page=' + pageNum; 
         req.flash("success_msg","Question deleted successfully");
         res.redirect(path);
@@ -497,6 +483,7 @@ router.get('/delete/:id', ensureAuthenticatedAdmin,function(req, res, next) {
   })
   .catch((err) => {
       console.log(err);
+      req.flash("error_msg","Something went wrong!");
       res.redirect('/users/questionbank');
   });
 });
@@ -565,7 +552,10 @@ router.post('/signup', (req, res) => {
     }
     else
     {
-        User.findOne({ email: email })
+        User.findOne({$or:[
+          { studentId: studentId },
+          { email: email }
+        ]})
         .then(user => {
             if(user){
               errors.push({ msg: 'Email is already registered' });
@@ -609,7 +599,6 @@ router.post('/signup', (req, res) => {
 router.post('/login', (req, res, next) => {
     var str = req.body.studentId;
     var adm = "Admin";
-    //console.log(str);
     passport.authenticate('local', {
       successRedirect: str.localeCompare(adm)==0 ? '/admin':'/dashboard',
       failureRedirect: '/users/login',
@@ -715,7 +704,6 @@ router.post('/reset/:token', function(req, res) {
 
 
 router.post('/addquestion', ensureAuthenticatedAdmin,(req, res) => {
-  console.log(req.body);
     const newQues = new Question({
     qtype: req.body.quetype,
     category: req.body.selectCategory,

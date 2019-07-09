@@ -26,12 +26,6 @@ router.get('/dashboard', ensureAuthenticated, (req, res) => {
 router.get('/temp-data', (req,res) => {
     Result.find({studentId: req.session.userInfo.studentId})
     .exec((err, data) => {
-        // var result = [];
-        // for(var i=0;i<data.length;i++)
-        // {
-        //     result.push({studentId: data[i].studentId, percentage: data[i].percentage});
-        // }
-        //console.log(data);
         res.send(data);
     });
 });
@@ -39,16 +33,16 @@ router.get('/temp-data', (req,res) => {
 router.get('/admin', ensureAuthenticatedAdmin, (req, res, next) =>{
 
     User
-        .count()
+        .countDocuments()
         .exec(function(err, users){
             Question
-                    .count()
+                    .countDocuments()
                     .exec(function(err, questions){
                         Quiz
-                            .count()
+                            .countDocuments()
                             .exec(function(err, quizes){
                                 Result
-                                    .count()
+                                    .countDocuments()
                                     .exec(function(err, results){
                                         if(err) return next(err)
                                         res.render('admin', {
@@ -63,11 +57,6 @@ router.get('/admin', ensureAuthenticatedAdmin, (req, res, next) =>{
                             });
                     });
         });
-
-    // res.render('admin', {
-    //     name: req.user.name,
-    //     title: 'Admin Dashboard'      // title for page Admin Dashboard
-    // })
 });
 
 module.exports = router;
