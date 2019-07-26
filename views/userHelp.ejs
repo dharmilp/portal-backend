@@ -55,20 +55,15 @@
       <div class="container-fluid">
         <div class="navbar-wrapper">
           
-          <a class="navbar-brand" href="#">Dashboard</a>
+          <a class="navbar-brand" href="#">Help</a>
         </div>
         <div class="collapse navbar-collapse justify-content-end" id="navigation" baseurl="<%=process.env.BASE_URL%>">
         </div>
       </div>
     </nav>
     
-    <!-- <div class="content">
-      <div id="chartContainer" style="height: 300px; width: 100%;">
-      </div>
-      <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-    </div> -->
     <div class="content">
-      <div id="chart-one" style="height: 400px; width: 100%;" ></div>
+      
     </div>
     
 
@@ -87,75 +82,3 @@
 <script src="../assets/js/core/popper.min.js"></script>
 <script src="../assets/js/core/bootstrap.min.js"></script>
 <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-<script src="https://cdn.anychart.com/releases/8.0.0/js/anychart-base.min.js"></script>
-
-<script src="https://cdn.zingchart.com/zingchart.min.js"></script>
-<script>
-  const fetchParams = {
-  method: "GET",
-  mode: "same-origin",
-  cache: "default"
-};
-
-//const url = document.getElementById("navigation").getAttribute("baseurl") + "/temp-data";
-const url = "http://localhost:5000/temp-data";
-fetch(url, fetchParams)
-  .then(res => {
-    if (!res.ok) {
-      throw new Error(res.statusText);
-    }
-    return res.json();
-  })
-  .then(data => {
-    const characters = data;
-    let characterData = [];
-    characters.forEach(function(character) {
-      characterData.push([character.quizName, character.percentage]);
-    });
-    console.log(data);
-    const chartOneData = {
-      type: "bar",
-      title: {
-        text: "Past Quizzes",
-        adjustLayout: true
-      },
-      scaleX: {
-        item: {
-          angle: '0'
-        }
-      },
-      "scale-y": {
-          "label": {
-          "text": "Percentage"
-        }
-      },
-      "plot": {
-          "animation": {
-          "delay": "150",
-          "effect": "4",
-          "method": "5",
-          "sequence": "1"
-        }
-      },
-      series: [
-        {
-          values: characterData
-        }
-      ],
-      plotarea: {
-        margin: 'dynamic'
-      }
-    };
-    zingchart.render({
-      id: "chart-one",
-      data: chartOneData,
-      height: "100%",
-      width: "60%"
-    });
-  })
-  .catch(err => {
-    console.log(url);
-    console.log(fetchParams);
-    console.log("Error Getting Data From Star Wars API");
-  })
-</script>

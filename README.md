@@ -17,7 +17,7 @@ npm install (this will install all dependencies)
 make .env file in current directory which will look like this
 
     
-    DB_LINK=type_your_mongodb_database_URI 
+    DB_LINK=type_your_mongodb_URI 
     (e.g. mongodb://myDBReader:D1fficultP%40ssw0rd@mongodb0.example.com:27017/admin or mongodb://sysop:moon@localhost/records)
     SESSION_SECRET=type_something_secret
     EMAIL_SERVICE=type_name_of_email_service (e.g. Gmail, Sendgrid)
@@ -25,6 +25,8 @@ make .env file in current directory which will look like this
     EMAIL_PASS=password_of_specified_username
     BASE_URL=http://localhost:5000
     
+
+type following on terminal
 
 node app.js
 
