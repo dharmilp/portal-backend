@@ -81,17 +81,17 @@ router.get('/uresult',ensureAuthenticated, (req, res, next) => {
           .skip((perPage * page) - perPage)
           .limit(perPage)
           .exec(function(err, results) {
-          Result.countDocuments().exec(function(err, count) {
+//          Result.countDocuments().exec(function(err, count) {
           if (err) return next(err)
           res.render('uresult',{
           name: "",
           results: results,
           current: page,
           docType: 'users/uresult',
-          pages: Math.ceil(count / perPage),
+          pages: Math.ceil(results.length / perPage),
           title: 'Result'
         });
-      });
+//      });
   });
 });
 
