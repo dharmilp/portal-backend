@@ -1,55 +1,43 @@
-<div class="wrapper ">
+<div class="wrapper">
   <div class="sidebar" data-color="#2E4F9B" data-active-color="primary">
-  <!--
+    <!--
       Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow"
   -->
     <div class="logo">
       <div class="simple-text logo-normal" style="text-align: center">
-          Welcome Admin
+          Welcome <%= session.userInfo.name %>
       </div>
     </div>
     <div class="sidebar-wrapper">
       <ul class="nav">
-        <li >
-          <a href="/admin">
+        <li class="active">
+          <a href="#">
             <i class="fas fa-tachometer-alt"></i>
             <p>Dashboard</p>
           </a>
         </li>
         <li >
-          <a href="/users/auser">
-            <i class="fa fa-users"></i>
-            <p>Users</p>
-          </a>
-        </li>
-        <li >
-          <a href="/users/questionbank">
-            <i class="fas fa-question-circle"></i>
-            <p>Question Bank</p>
-          </a>
-        </li>
-        <li >
-          <a href="/users/aquiz">
+          <a href="/users/uquiz">
             <i class="fas fa-tasks"></i>
             <p>Quiz</p>
           </a>
         </li>
         <li >
-          <a href="/users/aresult">
+          <a href="/users/uresult">
             <i class="fas fa-poll"></i>
-            <p>Results</p>
+            <p>Result</p>
           </a>
         </li>
         <li >
-          <a href="/users/amyaccount">
+          <a href="/users/umyaccount">
             <i class="fas fa-user-circle"></i>
             <p>My account</p>
           </a>
         </li>
-        <li class="active">
-          <a href="#">
-            <i class="fa fa-cog" aria-hidden="true"></i>
-            <p>Settings</p>
+        <li >
+          <a href="/help/user">
+            <i class="fas fa-hands-helping"></i>
+            <p>help</p>
           </a>
         </li>
         <li>
@@ -67,22 +55,18 @@
       <div class="container-fluid">
         <div class="navbar-wrapper">
           
-          <a class="navbar-brand" href="#">Settings</a>
+          <a class="navbar-brand" href="#">Help</a>
         </div>
-        <div class="collapse navbar-collapse justify-content-end" id="navigation">
+        <div class="collapse navbar-collapse justify-content-end" id="navigation" baseurl="<%=process.env.BASE_URL%>">
         </div>
       </div>
     </nav>
+    
     <div class="content">
-      <div style="align-content: center" class="update ml-auto mr-auto">
-        <a href="/groups" class="btn btn-primary btn-round">User Group</a>
-        <p>Create, edit and remove user's groups</p>
-      </div>
-      <div class="update ml-auto mr-auto">
-        <a href="/categories" class="btn btn-primary btn-round">Category</a>
-        <p>Create, edit and remove question's category</p>
-      </div>
+      
     </div>
+    
+
   </div>
 </div>
 

@@ -34,6 +34,14 @@
             <p>My account</p>
           </a>
         </li>
+        <% /* %>
+        <li >
+          <a href="/help/user">
+            <i class="fas fa-hands-helping"></i>
+            <p>help</p>
+          </a>
+        </li>
+        <% */ %>
         <li>
           <a href="/users/logout">
             <i class="fa fa-sign-out" aria-hidden="true"></i>
@@ -51,7 +59,7 @@
           
           <a class="navbar-brand" href="#">Dashboard</a>
         </div>
-        <div class="collapse navbar-collapse justify-content-end" id="navigation">
+        <div class="collapse navbar-collapse justify-content-end" id="navigation" baseurl="<%=process.env.BASE_URL%>">
         </div>
       </div>
     </nav>
@@ -75,7 +83,6 @@
 <!-- CSS Files -->
 <link href="../assets/css/bootstrap.min.css" rel="stylesheet" />
 <link href="../assets/css/paper-dashboard.css" rel="stylesheet" />
-<link href="../public/bargraph.css" rel="stylesheet" />
 
 <!--   Core JS Files   -->
 <script src="../assets/js/core/jquery.min.js"></script>
@@ -83,17 +90,17 @@
 <script src="../assets/js/core/bootstrap.min.js"></script>
 <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
 <script src="https://cdn.anychart.com/releases/8.0.0/js/anychart-base.min.js"></script>
-<script src="../bargraph.js"></script>
+
 <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
 <script>
   const fetchParams = {
   method: "GET",
-  mode: "same-origin",
+  mode: "cors",
   cache: "default"
 };
 
-const url = "http://localhost:5000/temp-data";
-
+//const url = document.getElementById("navigation").getAttribute("baseurl") + "/temp-data";
+const url = "https://spctestportal.herokuapp.com/temp-data";
 fetch(url, fetchParams)
   .then(res => {
     if (!res.ok) {

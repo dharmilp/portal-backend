@@ -24,6 +24,7 @@ router.get('/dashboard', ensureAuthenticated, (req, res) => {
 });
 
 router.get('/temp-data', (req,res) => {
+    console.log(req.headers);
     Result.find({studentId: req.session.userInfo.studentId})
     .exec((err, data) => {
         res.send(data);
