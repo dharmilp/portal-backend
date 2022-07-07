@@ -24,7 +24,7 @@
     "express": "^4.17.0",
     "express-ejs-layouts": "^2.5.0",
     "express-session": "^1.16.1",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "mongoose": "^5.5.9",
     "nodemailer": "^6.2.1",
     "passport": "^0.4.0",
